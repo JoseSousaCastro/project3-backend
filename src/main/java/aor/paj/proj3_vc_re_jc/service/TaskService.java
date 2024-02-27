@@ -31,6 +31,18 @@ public class TaskService {
     CategoryDao categoryDao;
 
 
+    // Return all Tasks
+    @GET
+    @Path("/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllTasks(@HeaderParam("token") String token) {
+        if (!userBean.tokenExist(token)) {
+            return Response.status(401).entity("Invalid token").build();
+        }
+        return taskBean.getAllTasks();
+    }
+
+
     // Return Task by Id
     @GET
     @Path("/task")

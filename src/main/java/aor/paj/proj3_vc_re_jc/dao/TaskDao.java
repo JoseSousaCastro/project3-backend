@@ -43,6 +43,15 @@ public class TaskDao extends AbstractDao<TaskEntity> {
         }
     }
 
+    public ArrayList<TaskEntity> findAllTasks() {
+        try {
+            ArrayList<TaskEntity> taskEntityEntities = (ArrayList<TaskEntity>) em.createNamedQuery("Task.findAllTasks").getResultList();
+            return taskEntityEntities;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public ArrayList<TaskEntity> findTasksByUser(UserEntity userEntity) {
         try {
             ArrayList<TaskEntity> taskEntityEntities = (ArrayList<TaskEntity>) em.createNamedQuery("Task.findTasksByUser").setParameter("creator", userEntity).getResultList();

@@ -119,6 +119,16 @@ public class TaskBean implements Serializable {
         } else return null;
     }
 
+    public Response getAllTasks() {
+        ArrayList<TaskEntity> tasks = taskDao.findAllTasks();
+        if (tasks != null && !tasks.isEmpty()) {
+            ArrayList<TaskDto> taskDtos = convertTasksFromEntityListToDtoList(tasks);
+            return Response.status(200).entity(taskDtos).build(); // Successful response with tasks
+        } else {
+            return Response.status(404).entity("No tasks found").build(); // No tasks found
+        }
+    }
+
     public Response getUserTasks(LoginDto user, RoleDto roleDto) {
         // Convert integer role to UserRole enum
         UserRole userRole = roleDto.getRole();
