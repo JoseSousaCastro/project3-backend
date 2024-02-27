@@ -18,7 +18,6 @@ import jakarta.ejb.Stateless;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
 @Stateless
 public class TaskBean implements Serializable {
     @EJB
@@ -127,8 +126,8 @@ public class TaskBean implements Serializable {
     }
 
 
-    public boolean updateOwnTask(int id, TaskDto taskDto, String username) {
-        TaskEntity t = taskDao.findTaskByIdAndUser(id, username);
+    public boolean updateOwnTask(int id, TaskDto taskDto, RoleDto user) {
+        TaskEntity t = taskDao.findTaskByIdAndUser(id, user.getUsername());
         CategoryEntity taskCategory = categoryDao.findCategoryByName(taskDto.getCategory());
         if (t != null) {
             t.setTitle(taskDto.getTitle());
