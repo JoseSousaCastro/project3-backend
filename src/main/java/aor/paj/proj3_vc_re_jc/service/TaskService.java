@@ -12,9 +12,7 @@ import aor.paj.proj3_vc_re_jc.enums.TaskState;
 import aor.paj.proj3_vc_re_jc.enums.UserRole;
 import jakarta.ejb.EJB;
 import jakarta.inject.Inject;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -54,16 +52,11 @@ public class TaskService {
     @GET
     @Path("/userTasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllUserTasks(@HeaderParam("token") String token, LoginDto user) {
+    public Response getAllUserTasks(@HeaderParam("token") String token, LoginDto user, RoleDto roleDto) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        ArrayList<TaskDto> tasks = taskBean.getUserTasks(user);
-        if (tasks != null) {
-            return Response.status(200).entity(tasks).build();
-        } else {
-            return Response.status(404).entity("No tasks from this user found").build();
-        }
+        return taskBean.getUserTasks(user, roleDto);
     }
 
 
@@ -71,16 +64,11 @@ public class TaskService {
     @GET
     @Path("/deletedTasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllDeletedTasks(@HeaderParam("token") String token) {
+    public Response getAllDeletedTasks(@HeaderParam("token") String token, RoleDto user) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        ArrayList<TaskDto> tasks = taskBean.getDeletedTasks();
-        if (tasks != null) {
-            return Response.status(200).entity(tasks).build();
-        } else {
-            return Response.status(404).entity("No deleted tasks found").build();
-        }
+        return taskBean.getDeletedTasks(user);
     }
 
 
@@ -88,16 +76,11 @@ public class TaskService {
     @GET
     @Path("/categoryTasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllCategoryTasks(@HeaderParam("token") String token, CategoryDto category) {
+    public Response getAllCategoryTasks(@HeaderParam("token") String token, CategoryDto category, RoleDto user) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        ArrayList<TaskDto> tasks = taskBean.getCategoryTasks(category);
-        if (tasks != null) {
-            return Response.status(200).entity(tasks).build();
-        } else {
-            return Response.status(404).entity("Tasks with this category name not found").build();
-        }
+        return taskBean.getCategoryTasks(category, user);
     }
 
 
@@ -149,10 +132,10 @@ public class TaskService {
 
 
     // Update Task (Edit the contents of the task)
-    @POST
+    @PUT
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateTask(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId, TaskDto task, RoleDto user) {
+    public Response updateTask(@HeaderParam("token") String token, TaskDto task, RoleDto user) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
@@ -162,16 +145,11 @@ public class TaskService {
         if (task.getDescription() == null || task.getDescription().isEmpty()) {
             return Response.status(400).entity("Task description cannot be empty").build();
         }
-        // Set default priority if not provided
-        if (task.getPriority() == null) {
-            task.setPriority(TaskPriority.LOW_PRIORITY);
-        } else {
-            // Validate if the provided priority is within the possible values
-            try {
-                TaskPriority.valueOf(task.getPriority().name());
-            } catch (IllegalArgumentException e) {
-                return Response.status(400).entity("Invalid priority input value").build();
-            }
+        // Validate if the provided priority is within the possible values
+        try {
+            TaskPriority.valueOf(task.getPriority().name());
+        } catch (IllegalArgumentException e) {
+            return Response.status(400).entity("Invalid priority input value").build();
         }
         // Perform date validation
         if (task.getStartDate() == null || task.getEndDate() == null) {
@@ -185,16 +163,7 @@ public class TaskService {
         if (category == null) {
             return Response.status(400).entity("Category does not exist").build();
         }
-        // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(user.getRole());
-        boolean updated;
-        // Check if the user is a DEVELOPER
-        if (userRole == UserRole.DEVELOPER) {
-            updated = taskBean.updateOwnTask(taskId, task, user);
-        } else {
-            // Case the user is a SCRUM_MASTER or PRODUCT_OWNER
-            updated = taskBean.updateTask(taskId, task);
-        }
+        boolean updated = taskBean.updateTask(task, category, user);
         if (updated) {
             return Response.status(200).entity("Task updated successfully").build();
         } else {
@@ -204,7 +173,7 @@ public class TaskService {
 
 
     // Update Task Status (Move task between columns)
-    @POST
+    @PUT
     @Path("/status")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateTaskStatus(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId,
@@ -231,24 +200,24 @@ public class TaskService {
 
 
     // Remove Task (Recycle bin)
-    @POST
+    @PUT
     @Path("/updateDeleted")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateDeleted(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId) {
+    public Response updateDeleted(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId, RoleDto user) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        boolean removed = taskBean.removeTask(taskId);
-        if (removed) {
+        Response removedMessage = taskBean.removeTask(taskId, user);
+        if (removedMessage == null) {
             return Response.status(200).entity("Task moved to recycle bin successfully").build();
         } else {
-            return Response.status(404).entity("Task with this id not found").build();
+            return Response.status(404).entity(removedMessage).build();
         }
     }
 
 
     // Restore Task from Recycle bin
-    @POST
+    @PUT
     @Path("/restoreDeleted")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateRestoreTask(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId) {
@@ -272,44 +241,21 @@ public class TaskService {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(user.getRole());
-        // Check if the user is a PRODUCT_OWNER
-        if (userRole == UserRole.PRODUCT_OWNER) {
-            boolean removed = taskBean.removeTaskPermanently(taskId);
-            if (removed) {
-                return Response.status(200).entity("Task removed successfully").build();
-            } else {
-                return Response.status(404).entity("Task with this id not found").build();
-            }
-        } else {
-            return Response.status(403).entity("Invalid role permissions").build();
-        }
+        return taskBean.removeTaskPermanently(taskId, user);
+
     }
 
 
     // Remove all Tasks from user (Recycle bin)
-    @POST
+    @PUT
     @Path("/updateDeleted/userTasks")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAllUserTasks(@HeaderParam("token") String token, RoleDto user) {
+    public Response deleteAllUserTasks(@HeaderParam("token") String token, LoginDto user, RoleDto roleDto) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(user.getRole());
-        // Check if the user is a PRODUCT_OWNER
-        if (userRole == UserRole.PRODUCT_OWNER) {
-            boolean removed = taskBean.removeAllUserTasks(user);
-            if (removed) {
-                return Response.status(200).entity("Tasks moved to recycle bin successfully").build();
-            } else {
-                return Response.status(404).entity("No user found or no tasks from this user found").build();
-            }
-        } else {
-            return Response.status(403).entity("Unauthorized: Only PRODUCT_OWNER can perform this action").build();
-        }
+        return taskBean.removeAllUserTasks(user, roleDto);
     }
 
 
@@ -322,22 +268,10 @@ public class TaskService {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(user.getRole());
-        // Check if the user is a PRODUCT_OWNER
-        if (userRole == UserRole.PRODUCT_OWNER) {
-            if (category == null || category.getName() == null || category.getName().isEmpty()) {
-                return Response.status(400).entity("Category name cannot be empty").build();
-            }
-            boolean added = ctgBean.addCategory(category);
-            if (added) {
-                return Response.status(201).entity("Category created successfully").build();
-            } else {
-                return Response.status(404).entity("Impossible to create category").build();
-            }
-        } else {
-            return Response.status(403).entity("Invalid role permissions").build();
+        if (category == null || category.getName() == null || category.getName().isEmpty()) {
+            return Response.status(400).entity("Category name cannot be empty").build();
         }
+        return ctgBean.addCategory(category, user);
     }
 
 
@@ -349,45 +283,21 @@ public class TaskService {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(user.getRole());
-        // Check if the user is a PRODUCT_OWNER
-        if (userRole == UserRole.PRODUCT_OWNER) {
-            boolean removed = ctgBean.removeCategory(category);
-            if (removed) {
-                return Response.status(200).entity("Category removed successfully").build();
-            } else {
-                return Response.status(404).entity("Category with this name is not found or there are tasks with this category").build();
-            }
-        } else {
-            return Response.status(403).entity("Invalid role permissions").build();
-        }
+        return ctgBean.removeCategory(category, user);
     }
 
 
     // Update Task Category
-    @POST
+    @PUT
     @Path("/category/update")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateCategory(@HeaderParam("token") String token, CategoryDto category, RoleDto user) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(user.getRole());
-        // Check if the user is a PRODUCT_OWNER
-        if (userRole == UserRole.PRODUCT_OWNER) {
-            if (category == null || category.getName() == null || category.getName().isEmpty()) {
-                return Response.status(400).entity("Category name cannot be empty").build();
-            }
-            boolean updated = ctgBean.updateCategoryName(category);
-            if (updated) {
-                return Response.status(200).entity("Category name updated successfully").build();
-            } else {
-                return Response.status(404).entity("Impossible to update category name").build();
-            }
-        } else {
-            return Response.status(403).entity("Invalid role permissions").build();
+        if (category == null || category.getName() == null || category.getName().isEmpty()) {
+            return Response.status(400).entity("Category name cannot be empty").build();
         }
+        return ctgBean.updateCategoryName(category, user);
     }
 }

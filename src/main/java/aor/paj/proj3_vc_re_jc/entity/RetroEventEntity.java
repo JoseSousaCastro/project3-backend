@@ -28,7 +28,7 @@ public class RetroEventEntity implements Serializable {
 
     @ManyToMany
     @JoinTable(
-            name = "RetrospectiveEventMembers",
+            name = "retrospective_event_members",
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
