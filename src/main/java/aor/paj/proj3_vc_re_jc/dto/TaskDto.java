@@ -25,7 +25,7 @@ public class TaskDto {
     @XmlElement
     private LocalDate endDate;
     @XmlElement
-    private Boolean deleted;
+    private boolean deleted;
     @XmlElement
     private String category;
 
@@ -101,11 +101,11 @@ public class TaskDto {
         this.endDate = endDate;
     }
 
-    public Boolean getDeleted() {
+    public boolean isDeleted() {
         return deleted;
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 
