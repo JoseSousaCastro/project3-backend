@@ -9,6 +9,7 @@ import aor.paj.proj3_vc_re_jc.entity.UserEntity;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import org.hibernate.annotations.Check;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 
 import java.io.Serializable;
 import java.security.SecureRandom;
@@ -104,6 +105,8 @@ public class UserBean implements Serializable {
             //  tokenDao.remove(t);
             return true;
         }
+        System.out.println("HERE");
+        System.out.println(token);
         return false;
     }
 

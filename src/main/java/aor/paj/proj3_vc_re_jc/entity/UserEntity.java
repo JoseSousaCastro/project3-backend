@@ -52,7 +52,7 @@ public class UserEntity implements Serializable{
     @Column(name="role", nullable = false, unique = false, updatable = true)
     private int role;
 
-    @Column(name = "token_id")
+    @Column(name = "token_id", nullable = true, unique = true, updatable = true)
     private String tokenId;
 
 /*    @OneToOne(cascade = CascadeType.ALL)
@@ -178,6 +178,8 @@ public class UserEntity implements Serializable{
     public void setTokenId(String tokenId) {
         this.tokenId = tokenId;
     }
+
+
 }
 
 
