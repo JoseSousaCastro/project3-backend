@@ -32,9 +32,6 @@ public class TaskService {
     @EJB
     CategoryDao categoryDao;
 
-    @Context
-    HttpServletRequest request;
-
 
     // Return Task by Id
     @GET
