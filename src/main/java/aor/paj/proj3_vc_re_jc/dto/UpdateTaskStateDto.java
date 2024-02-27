@@ -7,13 +7,24 @@ import jakarta.xml.bind.annotation.XmlElement;
 public class UpdateTaskStateDto {
 
     @XmlElement
+    private int id;
+    @XmlElement
     private TaskState state;
 
     public UpdateTaskStateDto() {
     }
 
-    public UpdateTaskStateDto(TaskState state) {
+    public UpdateTaskStateDto(int id, TaskState state) {
+        this.id = id;
         this.state = state;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public TaskState getState() {
