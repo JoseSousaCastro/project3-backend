@@ -19,7 +19,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.ArrayList;
-
+/*
 @Path("/tasks")
 public class TaskService {
 
@@ -377,4 +377,4 @@ public class TaskService {
             return Response.status(401).entity("Invalid Token").build();
         }
     }
-}
+} */
