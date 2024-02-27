@@ -3,6 +3,7 @@ package aor.paj.proj3_vc_re_jc.bean;
 
 import aor.paj.proj3_vc_re_jc.dto.RetroCommentDTO;
 import aor.paj.proj3_vc_re_jc.dto.RetroEventDTO;
+import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -15,7 +16,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-@ApplicationScoped
+@Stateless
 public class RetroBean {
     final String filename = "retrospectives.json";
     private ArrayList<RetroEventDTO> retroEvents;
