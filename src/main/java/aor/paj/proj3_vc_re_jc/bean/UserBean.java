@@ -30,10 +30,10 @@ public class UserBean implements Serializable {
 
     int tokenTimer = 120;
 
-    public String login(LoginDto user) {
-        UserEntity userEntity = userDao.findUserByUsername(user.getUsername());
+    public String login(String username, String password) {
+        UserEntity userEntity = userDao.findUserByUsername(username);
         if (userEntity != null && !userEntity.isDeleted()) {
-            if (userEntity.getPassword().equals(user.getPassword())) {
+            if (userEntity.getPassword().equals(password)) {
                 String token = generateNewToken();
                 userEntity.setTokenId(token);
                 TokenEntity t = new TokenEntity();

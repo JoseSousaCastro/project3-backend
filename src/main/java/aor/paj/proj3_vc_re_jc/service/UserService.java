@@ -23,8 +23,8 @@ public class UserService {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(LoginDto user) {
-        String token = userBean.login(user);
+    public Response login(@HeaderParam("username") String username, @HeaderParam("password") String password) {
+        String token = userBean.login(username,password);
         if (token != null) {
             return Response.status(200).entity(token).build();
         }
