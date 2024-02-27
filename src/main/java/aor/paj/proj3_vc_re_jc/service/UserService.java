@@ -38,7 +38,7 @@ public class UserService {
         if(userBean.register(user)){
             return Response.status(200).entity("The new user is registered").build();
         }
-        return Response.status(200).entity("There is a user with the same username or email!").build();
+        return Response.status(401).entity("There is a user with the same username").build();
     }
 
     @GET

@@ -32,7 +32,7 @@ public class UserBean implements Serializable {
 
     public String login(LoginDto user) {
         UserEntity userEntity = userDao.findUserByUsername(user.getUsername());
-        if (userEntity != null && !userEntity.getDeleted()) {
+        if (userEntity != null && !userEntity.isDeleted()) {
             if (userEntity.getPassword().equals(user.getPassword())) {
                 String token = generateNewToken();
                 userEntity.setTokenId(token);
@@ -82,7 +82,7 @@ public class UserBean implements Serializable {
         userDto.setPhone(user.getPhone());
         userDto.setPhotoURL(user.getPhotoURL());
         userDto.setToken(user.getTokenId());
-        userDto.setDeleted(user.getDeleted());
+        userDto.setDeleted(user.isDeleted());
         userDto.setRole(user.getRole());
         return userDto;
     }
@@ -196,7 +196,7 @@ public class UserBean implements Serializable {
             checkU.setPhone(u.getPhone());
             checkU.setRole(u.getRole());
             checkU.setPhotoURL(u.getPhotoURL());
-            checkU.setDeleted(u.getDeleted());
+            checkU.setDeleted(u.isDeleted());
             dtos.add(checkU);
         }
         t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));

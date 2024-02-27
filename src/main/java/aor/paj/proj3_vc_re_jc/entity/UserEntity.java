@@ -47,7 +47,7 @@ public class UserEntity implements Serializable{
     private String username;
 
     @Column(name="deleted", nullable = false, unique = false, updatable = true)
-    private Boolean deleted;
+    private boolean deleted;
 
     @Column(name="role", nullable = false, unique = false, updatable = true)
     private int role;
@@ -145,9 +145,7 @@ public class UserEntity implements Serializable{
         return id;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
+
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -165,7 +163,11 @@ public class UserEntity implements Serializable{
         this.photoURL = profilePhoto;
     }
 
-    public void setDeleted(Boolean deleted) {
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 
