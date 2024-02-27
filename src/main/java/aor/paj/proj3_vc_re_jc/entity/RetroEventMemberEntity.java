@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "RetrospectiveEventMembers")
+@Table(name = "retrospective_event_members")
 public class RetroEventMemberEntity implements Serializable {
 
     @Id
