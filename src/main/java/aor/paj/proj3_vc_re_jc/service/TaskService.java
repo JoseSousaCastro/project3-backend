@@ -268,6 +268,7 @@ public class TaskService {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
+        System.out.println(category.getName());
         if (category == null || category.getName() == null || category.getName().isEmpty()) {
             return Response.status(400).entity("Category name cannot be empty").build();
         }

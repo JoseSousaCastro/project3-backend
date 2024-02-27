@@ -47,7 +47,7 @@ public class TaskBean implements Serializable {
 
     public Response removeTask(int id, RoleDto user) {
         // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(user.getRole());
+        UserRole userRole = user.getRole();
         // Check if the user is a SCRUM_MASTER or PRODUCT_OWNER
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
             TaskEntity t = taskDao.findTaskById(id);
@@ -64,7 +64,7 @@ public class TaskBean implements Serializable {
 
     public Response removeAllUserTasks(LoginDto user, RoleDto roleDto) {
         // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(roleDto.getRole());
+        UserRole userRole = roleDto.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
             UserEntity userEntity = userDao.findUserByUsername(user.getUsername());
@@ -97,7 +97,7 @@ public class TaskBean implements Serializable {
 
     public Response removeTaskPermanently(int id, RoleDto user) {
         // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(user.getRole());
+        UserRole userRole = user.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
             TaskEntity t = taskDao.findTaskById(id);
@@ -121,7 +121,7 @@ public class TaskBean implements Serializable {
 
     public Response getUserTasks(LoginDto user, RoleDto roleDto) {
         // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(roleDto.getRole());
+        UserRole userRole = roleDto.getRole();
         // Check if the user is a SCRUM_MASTER or PRODUCT_OWNER
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
             UserEntity userEntity = userDao.findUserByUsername(user.getUsername());
@@ -143,7 +143,7 @@ public class TaskBean implements Serializable {
 
     public Response getDeletedTasks(RoleDto roleDto) {
         // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(roleDto.getRole());
+        UserRole userRole = roleDto.getRole();
         // Check if the user is a SCRUM_MASTER or PRODUCT_OWNER
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
             ArrayList<TaskEntity> tasks = taskDao.findTasksByDeleted();
@@ -160,7 +160,7 @@ public class TaskBean implements Serializable {
 
     public Response getCategoryTasks(CategoryDto category, RoleDto roleDto) {
         // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(roleDto.getRole());
+        UserRole userRole = roleDto.getRole();
         // Check if the user is a SCRUM_MASTER or PRODUCT_OWNER
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
             CategoryEntity ctgEntity = categoryDao.findCategoryById(category.getId());
@@ -183,7 +183,7 @@ public class TaskBean implements Serializable {
 
     public boolean updateTask(TaskDto taskDto, CategoryEntity taskCategory, RoleDto user) {
         // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(user.getRole());
+        UserRole userRole = user.getRole();
         TaskEntity t;
         // Check if the user is a DEVELOPER
         if (userRole == UserRole.DEVELOPER) {

@@ -141,7 +141,7 @@ public class UserBean implements Serializable {
         UserEntity u = userDao.findUserByUsername(user.getUsername());
         TokenEntity t = tokenDao.findTokenById(token);
         if (u != null) {
-            u.setRole(user.getRole());
+            u.setRole(user.getRole().getValue());
             t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));
             userDao.persist(u);
         }

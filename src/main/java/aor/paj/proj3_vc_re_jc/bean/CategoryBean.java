@@ -28,7 +28,7 @@ public class CategoryBean implements Serializable {
 
     public Response addCategory(CategoryDto ctg, RoleDto user) {
         // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(user.getRole());
+        UserRole userRole = user.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
             CategoryEntity c = categoryDao.findCategoryById(ctg.getId());
@@ -45,7 +45,7 @@ public class CategoryBean implements Serializable {
 
     public Response removeCategory(CategoryDto ctg, RoleDto user) {
         // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(user.getRole());
+        UserRole userRole = user.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
             CategoryEntity c = categoryDao.findCategoryById(ctg.getId());
@@ -67,7 +67,7 @@ public class CategoryBean implements Serializable {
 
     public Response updateCategoryName(CategoryDto ctg, RoleDto user) {
         // Convert integer role to UserRole enum
-        UserRole userRole = UserRole.valueOf(user.getRole());
+        UserRole userRole = user.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
             CategoryEntity c = categoryDao.findCategoryById(ctg.getId());
