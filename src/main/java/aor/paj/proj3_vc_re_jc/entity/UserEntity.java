@@ -28,16 +28,16 @@ public class UserEntity implements Serializable{
     @Column(name="email", nullable=false, unique = true, updatable = true)
     private String email;
 
-    @Column(name="firstName", nullable = false, unique = false, updatable = true)
+    @Column(name="first_name", nullable = false, unique = false, updatable = true)
     private String firstName;
 
-    @Column(name="lastName", nullable = false, unique = false, updatable = true)
+    @Column(name="last_name", nullable = false, unique = false, updatable = true)
     private String lastName;
 
     @Column(name="phone", nullable = false, unique = false, updatable = true)
     private String phone;
 
-    @Column(name="profilePhoto", nullable = false, unique = false, updatable = true)
+    @Column(name="profile_photo", nullable = false, unique = false, updatable = true)
     private String photoURL;
 
     @Column(name="password", nullable=false, unique = false, updatable = true)

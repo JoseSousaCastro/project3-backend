@@ -19,7 +19,7 @@ public class TokenEntity implements Serializable {
     @Column(name = "id", nullable = true, unique = true, updatable = true)
     private String id;
 
-    @Column(name="tokenExpiration", nullable = true, unique = false, updatable = true)
+    @Column(name="token_expiration", nullable = true, unique = false, updatable = true)
     private Instant tokenExpiration;
 
     @Column(name="deleted", nullable = false, unique = false, updatable = true)
