@@ -5,6 +5,7 @@ package aor.paj.proj3_vc_re_jc.entity;
 import java.io.Serializable;
 import java.util.Set;
 
+import aor.paj.proj3_vc_re_jc.enums.TaskPriority;
 import aor.paj.proj3_vc_re_jc.enums.UserRole;
 import jakarta.persistence.*;
 
@@ -19,12 +20,10 @@ public class UserEntity implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private int id;
-
 
     @Column(name="email", nullable=false, unique = true, updatable = true)
     private String email;
@@ -51,7 +50,7 @@ public class UserEntity implements Serializable{
     private boolean deleted;
 
     @Column(name="role", nullable = false, unique = false, updatable = true)
-    private UserRole role;
+    private int role;
 
     @Column(name = "token_id", nullable = true, unique = true, updatable = true)
     private String tokenId;
@@ -70,7 +69,8 @@ public class UserEntity implements Serializable{
 
 
     //default empty constructor
-    public UserEntity() {}
+    public UserEntity() {
+    }
 
     /*public Instant getTokenExpiration() {
         return tokenExpiration;
@@ -79,7 +79,6 @@ public class UserEntity implements Serializable{
     public void setTokenExpiration(Instant tokenExpiration) {
         this.tokenExpiration = tokenExpiration;
     } */
-
 
 
     public String getEmail() {
@@ -91,15 +90,12 @@ public class UserEntity implements Serializable{
     }
 
 
-
     public UserRole getRole() {
-        return role;
+        return UserRole.valueOf(this.role);
     }
 
-
-
     public void setRole(UserRole role) {
-        this.role = role;
+        this.role = role.getValue();
     }
 
     public String getPassword() {
@@ -145,8 +141,6 @@ public class UserEntity implements Serializable{
     public int getId() {
         return id;
     }
-
-
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

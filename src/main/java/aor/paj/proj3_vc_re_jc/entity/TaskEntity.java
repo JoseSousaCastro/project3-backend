@@ -100,7 +100,7 @@ public class TaskEntity implements Serializable {
     }
 
     public TaskState getState() {
-        return TaskState.fromValue(state);
+        return TaskState.fromValue(this.state);
     }
 
     public void setState(TaskState state) {
@@ -108,7 +108,7 @@ public class TaskEntity implements Serializable {
     }
 
     public TaskPriority getPriority() {
-        return TaskPriority.fromValue(priority);
+        return TaskPriority.fromValue(this.priority);
     }
 
     public void setPriority(TaskPriority priority) {
