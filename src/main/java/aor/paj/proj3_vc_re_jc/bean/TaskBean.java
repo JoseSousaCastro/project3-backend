@@ -197,7 +197,7 @@ public class TaskBean implements Serializable {
             t.setStartDate(taskDto.getStartDate());
             t.setEndDate(taskDto.getEndDate());
             t.setPriority(taskDto.getPriority());
-            t.setDeleted(taskDto.getDeleted());
+            t.setDeleted(taskDto.isDeleted());
             t.setCategory(taskCategory);
             return true;
         }
@@ -235,7 +235,7 @@ public class TaskBean implements Serializable {
         taskEntity.setPriority(t.getPriority());
         taskEntity.setStartDate(t.getStartDate());
         taskEntity.setEndDate(t.getEndDate());
-        taskEntity.setDeleted(t.getDeleted());
+        taskEntity.setDeleted(t.isDeleted());
         taskEntity.setCategory(taskCategory);
         return taskEntity;
     }

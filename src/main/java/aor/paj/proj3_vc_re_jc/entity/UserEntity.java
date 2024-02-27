@@ -5,6 +5,7 @@ package aor.paj.proj3_vc_re_jc.entity;
 import java.io.Serializable;
 import java.util.Set;
 
+import aor.paj.proj3_vc_re_jc.enums.UserRole;
 import jakarta.persistence.*;
 
 @Entity
@@ -50,7 +51,7 @@ public class UserEntity implements Serializable{
     private boolean deleted;
 
     @Column(name="role", nullable = false, unique = false, updatable = true)
-    private int role;
+    private UserRole role;
 
     @Column(name = "token_id", nullable = true, unique = true, updatable = true)
     private String tokenId;
@@ -91,13 +92,13 @@ public class UserEntity implements Serializable{
 
 
 
-    public int getRole() {
+    public UserRole getRole() {
         return role;
     }
 
 
 
-    public void setRole(int role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 

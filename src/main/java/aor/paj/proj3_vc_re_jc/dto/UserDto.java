@@ -2,6 +2,7 @@ package aor.paj.proj3_vc_re_jc.dto;
 
 
 
+import aor.paj.proj3_vc_re_jc.enums.UserRole;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 
 @XmlRootElement
 public class UserDto {
+    @XmlElement
+    private int id;
     @XmlElement
     private String username;
     @XmlElement
@@ -27,49 +30,48 @@ public class UserDto {
     private String photoURL;
     @XmlElement
     private String token;
-
     @XmlElement
-    private int role;
-
+    private UserRole role;
     @XmlElement
-    private Boolean deleted;
+    private boolean deleted;
 
     public UserDto() {
     }
 
+    public UserDto(String username, String password, String email, String firstName, String lastName, String phone, String photoURL, UserRole role, boolean deleted) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.photoURL = photoURL;
+        this.role = role;
+        this.deleted = deleted;
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
-    }
-
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public int getRole() {
-        return role;
-    }
-
-    public void setRole(int role) {
-        this.role = role;
     }
 
     public String getEmail() {
@@ -88,7 +90,6 @@ public class UserDto {
         this.firstName = firstName;
     }
 
-
     public String getLastName() {
         return lastName;
     }
@@ -97,7 +98,6 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-
     public String getPhone() {
         return phone;
     }
@@ -105,7 +105,6 @@ public class UserDto {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
 
     public String getPhotoURL() {
         return photoURL;
@@ -123,5 +122,19 @@ public class UserDto {
         this.token = token;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
 
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

@@ -6,6 +6,7 @@ import aor.paj.proj3_vc_re_jc.dao.UserDao;
 import aor.paj.proj3_vc_re_jc.dto.*;
 import aor.paj.proj3_vc_re_jc.entity.TokenEntity;
 import aor.paj.proj3_vc_re_jc.entity.UserEntity;
+import aor.paj.proj3_vc_re_jc.enums.UserRole;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import org.hibernate.annotations.Check;
@@ -68,7 +69,7 @@ public class UserBean implements Serializable {
         userEntity.setPhone(user.getPhone());
         userEntity.setPhotoURL(user.getPhotoURL());
         userEntity.setTokenId(user.getToken());
-        userEntity.setDeleted(user.getDeleted());
+        userEntity.setDeleted(user.isDeleted());
         userEntity.setRole(user.getRole());
         return userEntity;
     }
@@ -141,7 +142,7 @@ public class UserBean implements Serializable {
         UserEntity u = userDao.findUserByUsername(user.getUsername());
         TokenEntity t = tokenDao.findTokenById(token);
         if (u != null) {
-            u.setRole(user.getRole().getValue());
+            u.setRole(user.getRole());
             t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));
             userDao.persist(u);
         }
@@ -167,7 +168,7 @@ public class UserBean implements Serializable {
         checkU.setLastName(u.getLastName());
         checkU.setEmail(u.getEmail());
         checkU.setPhone(u.getPhone());
-        checkU.setRole(u.getRole());
+        checkU.setRole(u.getRole().getValue());
         checkU.setPhotoURL(u.getPhotoURL());
         t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));
         return checkU;
@@ -197,7 +198,7 @@ public class UserBean implements Serializable {
             checkU.setLastName(u.getLastName());
             checkU.setEmail(u.getEmail());
             checkU.setPhone(u.getPhone());
-            checkU.setRole(u.getRole());
+            checkU.setRole(u.getRole().getValue());
             checkU.setPhotoURL(u.getPhotoURL());
             checkU.setDeleted(u.isDeleted());
             dtos.add(checkU);

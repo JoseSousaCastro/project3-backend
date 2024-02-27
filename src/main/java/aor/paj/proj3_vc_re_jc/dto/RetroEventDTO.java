@@ -15,6 +15,7 @@ public class RetroEventDTO {
     private String title;
     @XmlElement
     private LocalDate date;
+    @XmlElement
     private ArrayList<String> retroMembers = new ArrayList<>();
     @XmlElement
     private ArrayList<RetroCommentDTO> retroComments = new ArrayList<>();
@@ -29,11 +30,6 @@ public class RetroEventDTO {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String generateId() {
-        this.id = String.valueOf(System.currentTimeMillis());
-        return id;
     }
 
     public String getTitle() {
