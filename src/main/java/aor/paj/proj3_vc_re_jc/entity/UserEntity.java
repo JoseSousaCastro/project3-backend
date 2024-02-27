@@ -50,7 +50,7 @@ public class UserEntity implements Serializable{
     private boolean deleted;
 
     @Column(name="role", nullable = false, unique = false, updatable = true)
-    private int role;
+    private UserRole role;
 
     @Column(name = "token_id", nullable = true, unique = true, updatable = true)
     private String tokenId;
