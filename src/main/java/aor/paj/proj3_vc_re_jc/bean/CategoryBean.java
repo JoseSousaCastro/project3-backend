@@ -26,31 +26,33 @@ public class CategoryBean implements Serializable {
     public CategoryBean() {
     }
 
-    public Response addCategory(CategoryDto ctg, RoleDto user) {
+    public Response addCategory(String category, RoleDto user) {
         // Convert integer role to UserRole enum
         UserRole userRole = user.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
-            CategoryEntity c = categoryDao.findCategoryById(ctg.getId());
+            CategoryEntity c = categoryDao.findCategoryByName(category);
             if (c == null) {
-                categoryDao.persist(convertCategoryFromDtoToEntity(ctg));
+                CategoryEntity ctgEntity = new CategoryEntity();
+                ctgEntity.setCategoryName(category);
+                categoryDao.persist(ctgEntity);
                 return Response.status(201).entity("Category created successfully").build();
             } else {
-                return Response.status(404).entity("Impossible to create category").build();
+                return Response.status(404).entity("Category with this name already exists").build();
             }
         } else {
             return Response.status(403).entity("Invalid role permissions").build();
         }
     }
 
-    public Response removeCategory(CategoryDto ctg, RoleDto user) {
+    public Response removeCategory(CategoryDto category, RoleDto user) {
         // Convert integer role to UserRole enum
         UserRole userRole = user.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
-            CategoryEntity c = categoryDao.findCategoryById(ctg.getId());
+            CategoryEntity c = categoryDao.findCategoryById(category.getId());
             if (c != null) {
-                ArrayList<TaskEntity> tasks = taskDao.getTasksByCategoryId(ctg.getId());
+                ArrayList<TaskEntity> tasks = taskDao.getTasksByCategoryId(category.getId());
                 if (tasks == null || tasks.isEmpty()) {
                     categoryDao.remove(c);
                     return Response.status(200).entity("Category removed successfully").build();

@@ -264,12 +264,11 @@ public class TaskService {
     @Path("/category/add")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addCategory(@HeaderParam("token") String token, CategoryDto category, RoleDto user) {
+    public Response addCategory(@HeaderParam("token") String token, @HeaderParam("name") String category, RoleDto user) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        System.out.println(category.getName());
-        if (category == null || category.getName() == null || category.getName().isEmpty()) {
+        if (category == null) {
             return Response.status(400).entity("Category name cannot be empty").build();
         }
         return ctgBean.addCategory(category, user);
