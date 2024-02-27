@@ -30,7 +30,7 @@ public class UserBean implements Serializable {
     @EJB
     TokenDao tokenDao;
 
-    int tokenTimer = 120;
+    int tokenTimer = 12000;
 
     public String login(String username, String password) {
         UserEntity userEntity = userDao.findUserByUsername(username);
