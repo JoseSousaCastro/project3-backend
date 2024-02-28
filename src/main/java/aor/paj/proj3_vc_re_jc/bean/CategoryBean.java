@@ -2,10 +2,12 @@ package aor.paj.proj3_vc_re_jc.bean;
 
 import aor.paj.proj3_vc_re_jc.dao.CategoryDao;
 import aor.paj.proj3_vc_re_jc.dao.TaskDao;
+import aor.paj.proj3_vc_re_jc.dao.UserDao;
 import aor.paj.proj3_vc_re_jc.dto.CategoryDto;
 import aor.paj.proj3_vc_re_jc.dto.RoleDto;
 import aor.paj.proj3_vc_re_jc.entity.CategoryEntity;
 import aor.paj.proj3_vc_re_jc.entity.TaskEntity;
+import aor.paj.proj3_vc_re_jc.entity.UserEntity;
 import aor.paj.proj3_vc_re_jc.enums.UserRole;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
@@ -20,12 +22,15 @@ public class CategoryBean implements Serializable {
     CategoryDao categoryDao;
     @EJB
     TaskDao taskDao;
+    @EJB
+    UserDao userDao;
 
     public CategoryBean() {
     }
 
-    public Response addCategory(String category, RoleDto user) {
-        // Convert integer role to UserRole enum
+    public Response addCategory(String token, String category) {
+        // Get user role by token
+        UserEntity user = userDao.findUserByToken(token);
         UserRole userRole = user.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
@@ -43,7 +48,10 @@ public class CategoryBean implements Serializable {
         }
     }
 
-    public Response removeCategory(CategoryDto category, UserRole userRole) {
+    public Response removeCategory(String token, CategoryDto category) {
+        // Get user role by token
+        UserEntity user = userDao.findUserByToken(token);
+        UserRole userRole = user.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
             CategoryEntity c = categoryDao.findCategoryById(category.getId());
@@ -63,7 +71,10 @@ public class CategoryBean implements Serializable {
         }
     }
 
-    public Response updateCategoryName(CategoryDto ctg, UserRole userRole) {
+    public Response updateCategoryName(String token, CategoryDto ctg) {
+        // Get user role by token
+        UserEntity user = userDao.findUserByToken(token);
+        UserRole userRole = user.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
             CategoryEntity c = categoryDao.findCategoryById(ctg.getId());
