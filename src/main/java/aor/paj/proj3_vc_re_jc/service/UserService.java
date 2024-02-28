@@ -9,6 +9,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import javax.management.relation.Role;
 import java.util.ArrayList;
 
 @Path("/users")
@@ -80,6 +81,21 @@ public class UserService {
             return Response.status(401).entity("Invalid Token!").build();
         }
     }
+
+    @GET
+    @Path("/roleByToken")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response roleByToken (@HeaderParam("token") String token) {
+        if (userBean.tokenExist(token)) {
+            RoleDto rdto = userBean.getRole(token);
+            return Response.status(200).entity(rdto).build();
+        } else {
+            userBean.logout(token);
+            return Response.status(401).entity("Invalid Token!").build();
+        }
+    }
+
 
     @PUT
     @Path("/editOtherProfile")
