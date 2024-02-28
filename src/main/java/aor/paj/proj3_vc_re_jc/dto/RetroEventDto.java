@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 @XmlRootElement
-public class RetroEventDTO {
+public class RetroEventDto {
     @XmlElement
     private String id;
     @XmlElement
@@ -18,10 +18,10 @@ public class RetroEventDTO {
     @XmlElement
     private ArrayList<String> retroMembers = new ArrayList<>();
     @XmlElement
-    private ArrayList<RetroCommentDTO> retroComments = new ArrayList<>();
+    private ArrayList<RetroCommentDto> retroComments = new ArrayList<>();
 
 
-    public RetroEventDTO() {
+    public RetroEventDto() {
     }
 
     public String getId() {
@@ -56,13 +56,12 @@ public class RetroEventDTO {
         return retroMembers;
     }
 
-    public void addComment(RetroCommentDTO retroComment) {
+    public void addComment(RetroCommentDto retroComment) {
         retroComments.add(retroComment);
     }
 
-    public ArrayList<RetroCommentDTO> getRetroComments() {
+    public ArrayList<RetroCommentDto> getRetroComments() {
         return retroComments;
     }
 
 }
-
