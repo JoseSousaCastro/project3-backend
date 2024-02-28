@@ -1,6 +1,7 @@
 package aor.paj.proj3_vc_re_jc.enums;
 
 public enum TaskState {
+
     TODO(100),
     DOING(200),
     DONE(300);

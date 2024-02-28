@@ -1,6 +1,5 @@
 package aor.paj.proj3_vc_re_jc.dto;
 
-
 import aor.paj.proj3_vc_re_jc.enums.TaskState;
 import jakarta.xml.bind.annotation.XmlElement;
 
@@ -34,5 +33,4 @@ public class UpdateTaskStateDto {
     public void setState(TaskState state) {
         this.state = state;
     }
-
 }

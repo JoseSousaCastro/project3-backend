@@ -22,7 +22,6 @@ public class TaskDao extends AbstractDao<TaskEntity> {
         super(TaskEntity.class);
     }
 
-
     public TaskEntity findTaskById(int id) {
         try {
             return (TaskEntity) em.createNamedQuery("Task.findTaskById").setParameter("id", id)
@@ -61,7 +60,6 @@ public class TaskDao extends AbstractDao<TaskEntity> {
         }
     }
 
-
     public ArrayList<TaskEntity> findTasksByDeleted() {
         try {
             ArrayList<TaskEntity> taskEntityEntities = (ArrayList<TaskEntity>) em.createNamedQuery("Task.findTasksByDeleted").setParameter("deleted", true).getResultList();
@@ -70,7 +68,6 @@ public class TaskDao extends AbstractDao<TaskEntity> {
             return null;
         }
     }
-
 
     public ArrayList<TaskEntity> getTasksByCategoryId(int categoryId) {
         try {
@@ -82,7 +79,4 @@ public class TaskDao extends AbstractDao<TaskEntity> {
             return null;
         }
     }
-
 }
-
-

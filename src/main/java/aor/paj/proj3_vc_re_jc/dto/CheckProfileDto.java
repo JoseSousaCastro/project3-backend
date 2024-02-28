@@ -1,7 +1,5 @@
 package aor.paj.proj3_vc_re_jc.dto;
 
-
-
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
@@ -99,4 +97,3 @@ public class CheckProfileDto {
         this.deleted = deleted;
     }
 }
-

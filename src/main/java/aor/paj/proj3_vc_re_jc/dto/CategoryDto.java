@@ -1,7 +1,5 @@
 package aor.paj.proj3_vc_re_jc.dto;
 
-
-
 import jakarta.xml.bind.annotation.XmlElement;
 
 public class CategoryDto {

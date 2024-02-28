@@ -1,202 +1,222 @@
 package aor.paj.proj3_vc_re_jc.bean;
 
-
-import aor.paj.proj3_vc_re_jc.dto.RetroCommentDTO;
-import aor.paj.proj3_vc_re_jc.dto.RetroEventDTO;
+import aor.paj.proj3_vc_re_jc.dao.RetroEventDao;
+import aor.paj.proj3_vc_re_jc.dao.UserDao;
+import aor.paj.proj3_vc_re_jc.dto.AddCommentDto;
+import aor.paj.proj3_vc_re_jc.dto.CreateRetroEventDto;
+import aor.paj.proj3_vc_re_jc.entity.RetroCommentEntity;
+import aor.paj.proj3_vc_re_jc.entity.RetroEventEntity;
+import aor.paj.proj3_vc_re_jc.entity.UserEntity;
+import aor.paj.proj3_vc_re_jc.enums.RetroCommentCategory;
+import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbBuilder;
-import jakarta.json.bind.JsonbConfig;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
-public class RetroBean {
-    final String filename = "retrospectives.json";
-    private ArrayList<RetroEventDTO> retroEvents;
+public class RetroBean implements Serializable {
+    @EJB
+    RetroEventDao retroEventDao;
+    @EJB
+    UserDao userDao;
 
     public RetroBean() {
-        File f = new File(filename);
-        if (f.exists()) {
-            try {
-                FileReader filereader = new FileReader(f);
-                retroEvents = JsonbBuilder.create().fromJson(filereader, new ArrayList<RetroEventDTO>() {
-                }.getClass().getGenericSuperclass());
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        } else
-            retroEvents = new ArrayList<RetroEventDTO>();
     }
 
-    public boolean addRetrospective(RetroEventDTO retroEvent) {
+    public boolean addRetrospective(String token, CreateRetroEventDto createRetroEventDTO) {
+        UserEntity userEntity = userDao.findUserByToken(token);
         boolean added = true;
-        if (retroEvent.getTitle().isBlank() && retroEvent.getDate() == null) {
-            added = false;
-        } else {
-            retroEvents.add(retroEvent);
-            writeIntoJsonFile();
-        }
-        return added;
-    }
-
-
-    public boolean addCommentToRetrospective(String id, RetroCommentDTO retroComment) {
-        boolean added = true;
-        if (retroComment.getDescription().isBlank() && retroComment.getUsername() == null && !validateCommentCategory(retroComment)) {
-            added = false;
-        } else {
-            for (RetroEventDTO a : retroEvents) {
-                if (a.getId().equals(id)) {
-                    a.addComment(retroComment);
-                    writeIntoJsonFile();
-                }
+        if (userEntity != null) {
+            if (createRetroEventDTO.getTitle().isBlank() || createRetroEventDTO.getSchedulingDate() == null) {
+                added = false;
+            } else {
+                RetroEventEntity retroEventEntity = new RetroEventEntity();
+                retroEventEntity.setTitle(createRetroEventDTO.getTitle());
+                retroEventEntity.setSchedulingDate(createRetroEventDTO.getSchedulingDate());
+                retroEventEntity.addMember(userEntity);
+                retroEventDao.persist(retroEventEntity);
             }
         }
         return added;
     }
 
-    public RetroEventDTO getRetrospective(String id) {
-        RetroEventDTO retroEvent = null;
-        for (RetroEventDTO a : retroEvents) {
-            if (a.getId().equals(id)) {
-                retroEvent = a;
-            }
+    public List<CreateRetroEventDto> getRetrospectives() {
+        List<RetroEventEntity> retroEventEntities = retroEventDao.getAllRetroEvents();
+
+        // Convert entities to DTOs
+        List<CreateRetroEventDto> retroEventDTOs = retroEventEntities.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return retroEventDTOs;
+    }
+
+    // Método auxiliar para converter uma entidade para um DTO
+    private CreateRetroEventDto convertToDTO(RetroEventEntity retroEventEntity) {
+        CreateRetroEventDto retroEventDTO = new CreateRetroEventDto();
+        retroEventDTO.setTitle(retroEventEntity.getTitle());
+        retroEventDTO.setSchedulingDate(retroEventEntity.getSchedulingDate());
+
+        return retroEventDTO;
+    }
+
+
+    public AddCommentDto convertToDTO(RetroCommentEntity retroCommentEntity) {
+        AddCommentDto addCommentDTO = new AddCommentDto();
+        addCommentDTO.setComment(retroCommentEntity.getComment());
+        addCommentDTO.setUserId(retroCommentEntity.getUser().getId());
+        addCommentDTO.setEventId(retroCommentEntity.getEvent().getEventId());
+        return addCommentDTO;
+    }
+
+    public List<AddCommentDto> getComments(int id) {
+        RetroEventEntity retroEventEntity = retroEventDao.find(id);
+        List<AddCommentDto> addCommentDtos = new ArrayList<>();
+        if (retroEventEntity != null) {
+            addCommentDtos = retroEventEntity.getComments().stream()
+                    .map(this::convertToDTO)
+                    .collect(Collectors.toList());
         }
-        return retroEvent;
+        return addCommentDtos;
     }
 
-    public ArrayList<RetroEventDTO> getRetrospectives() {
-        return retroEvents;
-    }
-
-    public ArrayList<RetroCommentDTO> getComments(String id) {
-        ArrayList<RetroCommentDTO> comments = null;
-        for (RetroEventDTO a : retroEvents) {
-            if (a.getId().equals(id)) {
-                comments = a.getRetroComments();
-            }
-        }
-        return comments;
-    }
-
-    public RetroCommentDTO getComment(String id, String commentId) {
-        RetroCommentDTO comment = null;
-        for (RetroEventDTO a : retroEvents) {
-            if (a.getId().equals(id)) {
-                for (RetroCommentDTO c : a.getRetroComments()) {
-                    if (c.getCommentId().equals(commentId)) {
-                        comment = c;
-                    }
-                }
-            }
-        }
-        return comment;
-    }
-
-    public boolean editComment(String id, String commentId, RetroCommentDTO retroComment) {
-        boolean edited = false;
-        for (RetroEventDTO a : retroEvents) {
-            if (a.getId().equals(id)) {
-                for (RetroCommentDTO c : a.getRetroComments()) {
-                    if (c.getCommentId().equals(commentId)) {
-                        c.setDescription(retroComment.getDescription());
-                        c.setCategory(retroComment.getCategory());
-                        edited = true;
-                        writeIntoJsonFile();
-                    }
-                }
-            }
-        }
-        return edited;
-    }
-
-    public boolean validateCommentCategory(RetroCommentDTO retroComment) {
-        boolean valid = true;
-        if (retroComment.getCategory() != 100 && retroComment.getCategory() != 200 && retroComment.getCategory() != 300) {
-            valid = false;
-        }
-        return valid;
-    }
-
-
-    public List<String> getMembers(String id) {
-        List<String> members = null;
-        for (RetroEventDTO a : retroEvents) {
-            if (a.getId().equals(id)) {
-                members = a.getRetroMembers();
-            }
+    public List<String> getMembers(int id) {
+        RetroEventEntity retroEventEntity = retroEventDao.find(id);
+        List<String> members = new ArrayList<>();
+        if (retroEventEntity != null) {
+            members = retroEventEntity.getMembers().stream()
+                    .map(UserEntity::getUsername)
+                    .collect(Collectors.toList());
         }
         return members;
     }
 
-    public String getMember(String id, String id2) {
+    public CreateRetroEventDto getRetrospective(int id) {
+        RetroEventEntity retroEventEntity = retroEventDao.find(id);
+        CreateRetroEventDto createRetroEventDTO = null;
+        if (retroEventEntity != null) {
+            createRetroEventDTO = convertToDTO(retroEventEntity);
+        }
+        return createRetroEventDTO;
+    }
+
+    public AddCommentDto getComment(int id, int id2) {
+        RetroEventEntity retroEventEntity = retroEventDao.find(id);
+        AddCommentDto addCommentDTO = null;
+        if (retroEventEntity != null) {
+            addCommentDTO = convertToDTO(retroEventEntity.getComment(id2));
+        }
+        return addCommentDTO;
+    }
+
+    public String getMember(int id, int id2) {
+        RetroEventEntity retroEventEntity = retroEventDao.find(id);
         String member = null;
-        for (RetroEventDTO a : retroEvents) {
-            if (a.getId().equals(id)) {
-                for (String c : a.getRetroMembers()) {
-                    if (c.equals(id2)) {
-                        member = c;
-                    }
-                }
-            }
+        if (retroEventEntity != null) {
+            member = retroEventEntity.getMembers().get(id2).getUsername();
         }
         return member;
     }
 
-    public boolean addMemberToRetrospective(String id, String id2) {
+    public boolean addCommentToRetrospective(String token, int id, AddCommentDto temporaryRetroComment) {
+        UserEntity userEntity = userDao.findUserByToken(token);
         boolean added = true;
-        for (RetroEventDTO a : retroEvents) {
-            if (a.getId().equals(id)) {
-                a.addMember(id2);
-                writeIntoJsonFile();
+        if (userEntity != null) {
+            if (temporaryRetroComment.getComment().isBlank() || temporaryRetroComment.getCategory() == null) {
+                added = false;
+            } else {
+                RetroEventEntity retroEventEntity = retroEventDao.find(id);
+                if (retroEventEntity != null) {
+                    RetroCommentEntity retroCommentEntity = new RetroCommentEntity();
+                    retroCommentEntity.setComment(temporaryRetroComment.getComment());
+                    // Convertendo a String para int
+                    try {
+                        int categoryValue = Integer.parseInt(temporaryRetroComment.getCategory());
+                        retroCommentEntity.setCategory(RetroCommentCategory.fromValue(categoryValue));
+                    } catch (NumberFormatException e) {
+                        // Lidar com a exceção, a String não é um número válido
+                        added = false;
+                    }
+                    retroCommentEntity.setUser(userEntity);
+                    retroCommentEntity.setEvent(retroEventEntity);
+                    retroEventEntity.addComment(retroCommentEntity);
+                    retroEventDao.merge(retroEventEntity);
+                } else {
+                    added = false;
+                }
             }
         }
         return added;
     }
 
-    public boolean deleteComment(String id, String id2) {
-        boolean deleted = false;
-        for (RetroEventDTO a : retroEvents) {
-            if (a.getId().equals(id)) {
-                for (RetroCommentDTO c : a.getRetroComments()) {
-                    if (c.getCommentId().equals(id2)) {
-                        a.getRetroComments().remove(c);
-                        deleted = true;
-                        writeIntoJsonFile();
-                    }
+
+    public boolean addMemberToRetrospective(int id, int id2) {
+        RetroEventEntity retroEventEntity = retroEventDao.find(id);
+        UserEntity userEntity = userDao.find(id2);
+        boolean added = true;
+        if (retroEventEntity != null && userEntity != null) {
+            retroEventEntity.addMember(userEntity);
+            retroEventDao.merge(retroEventEntity);
+        } else {
+            added = false;
+        }
+        return added;
+    }
+
+    public boolean editComment(int id, int id2, AddCommentDto temporaryRetroComment) {
+        RetroEventEntity retroEventEntity = retroEventDao.find(id);
+        boolean edited = true;
+        if (retroEventEntity != null) {
+            RetroCommentEntity retroCommentEntity = retroEventEntity.getComment(id2);
+            if (retroCommentEntity != null) {
+                retroCommentEntity.setComment(temporaryRetroComment.getComment());
+                // Convertendo a String para int
+                try {
+                    int categoryValue = Integer.parseInt(temporaryRetroComment.getCategory());
+                    retroCommentEntity.setCategory(RetroCommentCategory.fromValue(categoryValue));
+                } catch (NumberFormatException e) {
+                    // Lidar com a exceção, a String não é um número válido
+                    edited = false;
                 }
+                retroEventDao.merge(retroEventEntity);
+            } else {
+                edited = false;
             }
+        } else {
+            edited = false;
+        }
+        return edited;
+    }
+
+    public boolean deleteComment(int id, int id2) {
+        RetroEventEntity retroEventEntity = retroEventDao.find(id);
+        boolean deleted = true;
+        if (retroEventEntity != null) {
+            RetroCommentEntity retroCommentEntity = retroEventEntity.getComment(id2);
+            if (retroCommentEntity != null) {
+                retroEventEntity.removeComment(retroCommentEntity);
+                retroEventDao.merge(retroEventEntity);
+            } else {
+                deleted = false;
+            }
+        } else {
+            deleted = false;
         }
         return deleted;
     }
 
-    public boolean deleteAllComments(String id) {
-        boolean deleted = false;
-        for (RetroEventDTO a : retroEvents) {
-            if (a.getId().equals(id)) {
-                a.getRetroComments().clear();
-                deleted = true;
-                writeIntoJsonFile();
-            }
+    public boolean deleteAllComments(int id) {
+        RetroEventEntity retroEventEntity = retroEventDao.find(id);
+        boolean deleted = true;
+        if (retroEventEntity != null) {
+            retroEventEntity.getComments().clear();
+            retroEventDao.merge(retroEventEntity);
+        } else {
+            deleted = false;
         }
         return deleted;
-    }
-
-
-    private void writeIntoJsonFile() {
-        Jsonb jsonb = JsonbBuilder.create(new
-                JsonbConfig().withFormatting(true));
-        try {
-            jsonb.toJson(retroEvents, new FileOutputStream(filename));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

@@ -1,13 +1,10 @@
 package aor.paj.proj3_vc_re_jc.entity;
 
-
 import aor.paj.proj3_vc_re_jc.enums.TaskPriority;
 import aor.paj.proj3_vc_re_jc.enums.TaskState;
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Entity
@@ -55,7 +52,6 @@ public class TaskEntity implements Serializable {
     //Owning Side Category - Task
     @ManyToOne
     private CategoryEntity category;
-
 
     public TaskEntity() {
     }
@@ -140,5 +136,3 @@ public class TaskEntity implements Serializable {
         this.category = category;
     }
 }
-
-

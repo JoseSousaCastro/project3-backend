@@ -1,6 +1,5 @@
 package aor.paj.proj3_vc_re_jc.bean;
 
-
 import aor.paj.proj3_vc_re_jc.dao.TokenDao;
 import aor.paj.proj3_vc_re_jc.dao.UserDao;
 import aor.paj.proj3_vc_re_jc.dto.*;
@@ -49,7 +48,6 @@ public class UserBean implements Serializable {
         }
         return null;
     }
-
 
     public boolean register(UserDto user) {
         UserEntity u = userDao.findUserByUsername(user.getUsername());
@@ -112,8 +110,6 @@ public class UserBean implements Serializable {
         return false;
     }
 
-
-
     public boolean tokenExist(String token) {
         UserEntity u = userDao.findUserByToken(token);
         TokenEntity t = tokenDao.findTokenById(token);
@@ -170,7 +166,7 @@ public class UserBean implements Serializable {
         return false;
     }
 
-    public CheckProfileDto checkProfile (String username, String token) {
+    public CheckProfileDto checkProfile(String username, String token) {
         UserEntity u = userDao.findUserByUsername(username);
         TokenEntity t = tokenDao.findTokenById(token);
         CheckProfileDto checkU = new CheckProfileDto();
@@ -185,7 +181,7 @@ public class UserBean implements Serializable {
         return checkU;
     }
 
-    public boolean createUser (String token, UserDto user) {
+    public boolean createUser(String token, UserDto user) {
         UserEntity u = userDao.findUserByUsername(user.getUsername());
         TokenEntity t = tokenDao.findTokenById(token);
         if (u == null) {
@@ -196,7 +192,7 @@ public class UserBean implements Serializable {
             return false;
     }
 
-    public ArrayList<CheckProfileDto> checkAll (String token) {
+    public ArrayList<CheckProfileDto> checkAll(String token) {
         TokenEntity t = tokenDao.findTokenById(token);
         List<UserEntity> userList = userDao.allUsers();
 
@@ -218,7 +214,7 @@ public class UserBean implements Serializable {
         return dtos;
     }
 
-    public void deleteUser (String username, String token) {
+    public void deleteUser(String username, String token) {
         TokenEntity t = tokenDao.findTokenById(token);
         UserEntity u = userDao.findUserByUsername(username);
         if (u != null) {
@@ -229,8 +225,3 @@ public class UserBean implements Serializable {
         }
     }
 }
-
-
-
-
-

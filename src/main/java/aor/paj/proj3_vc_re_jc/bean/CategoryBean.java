@@ -1,6 +1,5 @@
 package aor.paj.proj3_vc_re_jc.bean;
 
-
 import aor.paj.proj3_vc_re_jc.dao.CategoryDao;
 import aor.paj.proj3_vc_re_jc.dao.TaskDao;
 import aor.paj.proj3_vc_re_jc.dto.CategoryDto;
@@ -14,7 +13,6 @@ import jakarta.ws.rs.core.Response;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 
 @Stateless
 public class CategoryBean implements Serializable {
@@ -99,4 +97,3 @@ public class CategoryBean implements Serializable {
     }
 
 }
-

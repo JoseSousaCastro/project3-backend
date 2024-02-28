@@ -1,6 +1,5 @@
 package aor.paj.proj3_vc_re_jc.bean;
 
-
 import aor.paj.proj3_vc_re_jc.dao.CategoryDao;
 import aor.paj.proj3_vc_re_jc.dao.TaskDao;
 import aor.paj.proj3_vc_re_jc.dao.UserDao;
@@ -257,6 +256,4 @@ public class TaskBean implements Serializable {
         }
         return taskDtos;
     }
-
 }
-

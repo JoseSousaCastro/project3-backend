@@ -1,6 +1,6 @@
 package aor.paj.proj3_vc_re_jc.entity;
 
-
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -10,13 +10,12 @@ import aor.paj.proj3_vc_re_jc.enums.UserRole;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="user")
+@Table(name = "user")
 @NamedQuery(name = "User.findUserByUsername", query = "SELECT u FROM UserEntity u WHERE u.username = :username")
 @NamedQuery(name = "User.findUserByEmail", query = "SELECT u FROM UserEntity u WHERE u.email = :email")
 @NamedQuery(name = "User.findUserByToken", query = "SELECT DISTINCT u FROM UserEntity u WHERE u.tokenId = :token")
 @NamedQuery(name = "User.findAllUsers", query = "SELECT u FROM UserEntity u")
-public class UserEntity implements Serializable{
-
+public class UserEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,28 +27,28 @@ public class UserEntity implements Serializable{
     @Column(name="email", nullable=false, unique = true, updatable = true)
     private String email;
 
-    @Column(name="first_name", nullable = false, unique = false, updatable = true)
+    @Column(name = "first_name", nullable = false, unique = false, updatable = true)
     private String firstName;
 
-    @Column(name="last_name", nullable = false, unique = false, updatable = true)
+    @Column(name = "last_name", nullable = false, unique = false, updatable = true)
     private String lastName;
 
-    @Column(name="phone", nullable = false, unique = false, updatable = true)
+    @Column(name = "phone", nullable = false, unique = false, updatable = true)
     private String phone;
 
-    @Column(name="profile_photo", nullable = false, unique = false, updatable = true)
+    @Column(name = "profile_photo", nullable = false, unique = false, updatable = true)
     private String photoURL;
 
-    @Column(name="password", nullable=false, unique = false, updatable = true)
+    @Column(name = "password", nullable = false, unique = false, updatable = true)
     private String password;
 
-    @Column(name="username", nullable=false, unique = true, updatable = false)
+    @Column(name = "username", nullable = false, unique = true, updatable = false)
     private String username;
 
     @Column(name="deleted", nullable = false, unique = false, updatable = true)
     private boolean deleted;
 
-    @Column(name="role", nullable = false, unique = false, updatable = true)
+    @Column(name = "role", nullable = false, unique = false, updatable = true)
     private int role;
 
     @Column(name = "token_id", nullable = true, unique = true, updatable = true)
@@ -176,5 +175,3 @@ public class UserEntity implements Serializable{
 
 
 }
-
-

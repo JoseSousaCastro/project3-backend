@@ -1,6 +1,5 @@
 package aor.paj.proj3_vc_re_jc.entity;
 
-
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -9,8 +8,9 @@ import java.util.ArrayList;
 
 @Entity
 @Table(name = "retro_event")
-@NamedQuery(name = "RetroEvent.findretroEventById", query = "SELECT a FROM RetroEventEntity a WHERE a.id = :id")
-
+@NamedQuery(name = "RetroEvent.findRetroEventById", query = "SELECT a FROM RetroEventEntity a WHERE a.id = :id")
+@NamedQuery(name = "RetroEvent.findAllRetroEvents", query = "SELECT a FROM RetroEventEntity a")
+@NamedQuery(name = "RetroEvent.findRetroEventByUserId", query = "SELECT a FROM RetroEventEntity a WHERE a.members = :userId")
 public class RetroEventEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -18,7 +18,7 @@ public class RetroEventEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true, updatable = false)
-    private String eventId;
+    private int eventId;
 
     @Column(name = "title", nullable = false, unique = false, length = 25, columnDefinition = "TEXT")
     private String title;
@@ -40,8 +40,12 @@ public class RetroEventEntity implements Serializable {
     public RetroEventEntity() {
     }
 
-    public String getEventId() {
+    public int getEventId() {
         return eventId;
+    }
+
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
     }
 
     public String getTitle() {
@@ -76,5 +80,16 @@ public class RetroEventEntity implements Serializable {
         comments.add(comment);
     }
 
-}
+    public RetroCommentEntity getComment(int id2) {
+        for (RetroCommentEntity comment : comments) {
+            if (comment.getCommentId() == id2) {
+                return comment;
+            }
+        }
+        return null;
+    }
 
+    public void removeComment(RetroCommentEntity retroCommentEntity) {
+        comments.remove(retroCommentEntity);
+    }
+}

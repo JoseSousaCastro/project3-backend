@@ -1,6 +1,5 @@
 package aor.paj.proj3_vc_re_jc.service;
 
-
 import aor.paj.proj3_vc_re_jc.bean.CategoryBean;
 import aor.paj.proj3_vc_re_jc.bean.TaskBean;
 import aor.paj.proj3_vc_re_jc.bean.UserBean;
@@ -59,7 +58,6 @@ public class TaskService {
         }
     }
 
-
     // Return all Tasks from user
     @GET
     @Path("/userTasks")
@@ -70,7 +68,6 @@ public class TaskService {
         }
         return taskBean.getUserTasks(user, roleDto);
     }
-
 
     // Return all deleted Tasks
     @GET
@@ -83,7 +80,6 @@ public class TaskService {
         return taskBean.getDeletedTasks(user);
     }
 
-
     // Return all Tasks with same Category
     @GET
     @Path("/categoryTasks")
@@ -94,7 +90,6 @@ public class TaskService {
         }
         return taskBean.getCategoryTasks(category, user);
     }
-
 
     // Add Task
     @POST
@@ -142,7 +137,6 @@ public class TaskService {
         }
     }
 
-
     // Update Task (Edit the contents of the task)
     @PUT
     @Path("/update")
@@ -183,7 +177,6 @@ public class TaskService {
         }
     }
 
-
     // Update Task Status (Move task between columns)
     @PUT
     @Path("/status")
@@ -210,7 +203,6 @@ public class TaskService {
         }
     }
 
-
     // Remove Task (Recycle bin)
     @PUT
     @Path("/updateDeleted")
@@ -226,7 +218,6 @@ public class TaskService {
             return Response.status(404).entity(removedMessage).build();
         }
     }
-
 
     // Restore Task from Recycle bin
     @PUT
@@ -244,7 +235,6 @@ public class TaskService {
         }
     }
 
-
     // Remove Task Permanently
     @DELETE
     @Path("/remove")
@@ -257,7 +247,6 @@ public class TaskService {
 
     }
 
-
     // Remove all Tasks from user (Recycle bin)
     @PUT
     @Path("/updateDeleted/userTasks")
@@ -269,7 +258,6 @@ public class TaskService {
         }
         return taskBean.removeAllUserTasks(user, roleDto);
     }
-
 
     // Add Task Category
     @POST
@@ -286,7 +274,6 @@ public class TaskService {
         return ctgBean.addCategory(category, user);
     }
 
-
     // Remove Task Category
     @DELETE
     @Path("/category/remove")
@@ -297,7 +284,6 @@ public class TaskService {
         }
         return ctgBean.removeCategory(category, user);
     }
-
 
     // Update Task Category
     @PUT

@@ -40,4 +40,3 @@ public class RoleDto {
         this.username = username;
     }
 }
-

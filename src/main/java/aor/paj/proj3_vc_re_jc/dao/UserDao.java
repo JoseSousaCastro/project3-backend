@@ -1,6 +1,5 @@
 package aor.paj.proj3_vc_re_jc.dao;
 
-
 import aor.paj.proj3_vc_re_jc.entity.UserEntity;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;
@@ -9,11 +8,11 @@ import java.util.Collections;
 import java.util.List;
 
 @Stateless
-public class UserDao extends AbstractDao <UserEntity> {
+public class UserDao extends AbstractDao<UserEntity> {
 
     private static final long serialVersionUID = 1L;
 
-    public UserDao () {
+    public UserDao() {
         super(UserEntity.class);
     }
 
@@ -26,7 +25,6 @@ public class UserDao extends AbstractDao <UserEntity> {
             return null;
         }
     }
-
 
     public UserEntity findUserByUsername(String username) {
         try {
@@ -45,8 +43,4 @@ public class UserDao extends AbstractDao <UserEntity> {
             return Collections.emptyList();
         }
     }
-
-
-
 }
-
