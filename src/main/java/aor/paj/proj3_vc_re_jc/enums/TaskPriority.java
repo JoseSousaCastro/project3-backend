@@ -1,6 +1,7 @@
 package aor.paj.proj3_vc_re_jc.enums;
 
 public enum TaskPriority {
+
     LOW_PRIORITY(100),
     MEDIUM_PRIORITY(200),
     HIGH_PRIORITY(300);

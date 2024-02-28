@@ -1,6 +1,5 @@
 package aor.paj.proj3_vc_re_jc.service;
 
-
 import aor.paj.proj3_vc_re_jc.bean.CategoryBean;
 import aor.paj.proj3_vc_re_jc.bean.TaskBean;
 import aor.paj.proj3_vc_re_jc.bean.UserBean;
@@ -12,9 +11,7 @@ import aor.paj.proj3_vc_re_jc.enums.TaskState;
 import aor.paj.proj3_vc_re_jc.enums.UserRole;
 import jakarta.ejb.EJB;
 import jakarta.inject.Inject;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -32,7 +29,6 @@ public class TaskService {
     @EJB
     CategoryDao categoryDao;
 
-
     // Return Task by Id
     @GET
     @Path("/task")
@@ -48,7 +44,6 @@ public class TaskService {
             return Response.status(404).entity("Task with this id not found").build();
         }
     }
-
 
     // Return all Tasks from user
     @GET
@@ -66,7 +61,6 @@ public class TaskService {
         }
     }
 
-
     // Return all deleted Tasks
     @GET
     @Path("/deletedTasks")
@@ -83,7 +77,6 @@ public class TaskService {
         }
     }
 
-
     // Return all Tasks with same Category
     @GET
     @Path("/categoryTasks")
@@ -99,7 +92,6 @@ public class TaskService {
             return Response.status(404).entity("Tasks with this category name not found").build();
         }
     }
-
 
     // Add Task
     @POST
@@ -146,7 +138,6 @@ public class TaskService {
             return Response.status(404).entity("Impossible to create task. Verify all fields").build();
         }
     }
-
 
     // Update Task (Edit the contents of the task)
     @POST
@@ -202,7 +193,6 @@ public class TaskService {
         }
     }
 
-
     // Update Task Status (Move task between columns)
     @POST
     @Path("/status")
@@ -229,7 +219,6 @@ public class TaskService {
         }
     }
 
-
     // Remove Task (Recycle bin)
     @POST
     @Path("/updateDeleted")
@@ -246,7 +235,6 @@ public class TaskService {
         }
     }
 
-
     // Restore Task from Recycle bin
     @POST
     @Path("/restoreDeleted")
@@ -262,7 +250,6 @@ public class TaskService {
             return Response.status(404).entity("Task with this id not found").build();
         }
     }
-
 
     // Remove Task Permanently
     @DELETE
@@ -287,7 +274,6 @@ public class TaskService {
         }
     }
 
-
     // Remove all Tasks from user (Recycle bin)
     @POST
     @Path("/updateDeleted/userTasks")
@@ -311,7 +297,6 @@ public class TaskService {
             return Response.status(403).entity("Unauthorized: Only PRODUCT_OWNER can perform this action").build();
         }
     }
-
 
     // Add Task Category
     @POST
@@ -340,7 +325,6 @@ public class TaskService {
         }
     }
 
-
     // Remove Task Category
     @DELETE
     @Path("/category/remove")
@@ -363,7 +347,6 @@ public class TaskService {
             return Response.status(403).entity("Invalid role permissions").build();
         }
     }
-
 
     // Update Task Category
     @POST

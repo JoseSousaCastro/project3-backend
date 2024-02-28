@@ -1,35 +1,35 @@
 package aor.paj.proj3_vc_re_jc.service;
 
-
 import aor.paj.proj3_vc_re_jc.bean.RetroBean;
 import aor.paj.proj3_vc_re_jc.bean.UserBean;
-import aor.paj.proj3_vc_re_jc.dto.RetroCommentDTO;
-import aor.paj.proj3_vc_re_jc.dto.RetroEventDTO;
-import jakarta.inject.Inject;
+import aor.paj.proj3_vc_re_jc.dto.AddCommentDto;
+import aor.paj.proj3_vc_re_jc.dto.CreateRetroEventDto;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-
 @Path("/retrospective")
+@Stateless
 public class RetroService {
 
-    @Inject
+    @EJB
     RetroBean retroBean;
-    @Inject
+    @EJB
     UserBean userBean;
 
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRetrospectives(@HeaderParam("token") String token) {
+    public Response getAllRetrospectives(@HeaderParam("token") String token) {
         Response response;
         if (!userBean.tokenExist(token)) {
             response = Response.status(401).entity("Invalid credentials").build();
         } else {
-            List<RetroEventDTO> retroEvents = retroBean.getRetrospectives();
+            List<CreateRetroEventDto> retroEvents = retroBean.getRetrospectives();
             response = Response.status(200).entity(retroEvents).build();
         }
         return response;
@@ -38,12 +38,12 @@ public class RetroService {
     @GET
     @Path("/{id}/allComments")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getComments(@HeaderParam("token") String token, @PathParam("id") String id) {
+    public Response getComments(@HeaderParam("token") String token, @PathParam("id") int id) {
         Response response;
         if (!userBean.tokenExist(token)) {
             response = Response.status(401).entity("Invalid credentials").build();
         } else {
-            List<RetroCommentDTO> retroComments = retroBean.getComments(id);
+            List<AddCommentDto> retroComments = retroBean.getComments(id);
             if (retroComments == null) {
                 response = Response.status(404).entity("Retrospective with this id not found").build();
             } else {
@@ -56,7 +56,7 @@ public class RetroService {
     @GET
     @Path("/{id}/allMembers")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMembers(@HeaderParam("token") String token, @PathParam("id") String id) {
+    public Response getMembers(@HeaderParam("token") String token, @PathParam("id") int id) {
         Response response;
         if (!userBean.tokenExist(token)) {
             response = Response.status(401).entity("Invalid credentials").build();
@@ -74,12 +74,12 @@ public class RetroService {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRetrospective(@HeaderParam("token") String token, @PathParam("id") String id) {
+    public Response getRetrospective(@HeaderParam("token") String token, @PathParam("id") int id) {
         Response response;
         if (!userBean.tokenExist(token)) {
             response = Response.status(401).entity("Invalid credentials").build();
         } else {
-            RetroEventDTO retroEvent = retroBean.getRetrospective(id);
+            CreateRetroEventDto retroEvent = retroBean.getRetrospective(id);
             if (retroEvent == null) {
                 response = Response.status(404).entity("Retrospective with this id not found").build();
             } else {
@@ -92,15 +92,15 @@ public class RetroService {
     @GET
     @Path("/{id}/comment/{id2}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getComment(@HeaderParam("token") String token, @PathParam("id") String id, @PathParam("id2") String id2) {
+    public Response getComment(@HeaderParam("token") String token, @PathParam("id") int id, @PathParam("id2") int id2) {
         Response response;
         if (!userBean.tokenExist(token)) {
             response = Response.status(401).entity("Invalid credentials").build();
         } else {
-            if (id == null) {
+            if (id == 0) {
                 response = Response.status(400).entity("Invalid retrospective id").build();
             } else {
-                RetroCommentDTO retroComment = retroBean.getComment(id, id2);
+                AddCommentDto retroComment = retroBean.getComment(id, id2);
                 if (retroComment == null) {
                     response = Response.status(404).entity("Comment with this id not found").build();
                 } else {
@@ -114,12 +114,12 @@ public class RetroService {
     @GET
     @Path("/{id}/member/{id2}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMember(@HeaderParam("token") String token, @PathParam("id") String id, @PathParam("id2") String id2) {
+    public Response getMember(@HeaderParam("token") String token, @PathParam("id") int id, @PathParam("id2") int id2) {
         Response response;
         if (!userBean.tokenExist(token)) {
             response = Response.status(401).entity("Invalid credentials").build();
         } else {
-            if (id == null) {
+            if (id == 0) {
                 response = Response.status(400).entity("Invalid retrospective id").build();
             } else {
                 String retroMember = retroBean.getMember(id, id2);
@@ -133,36 +133,34 @@ public class RetroService {
         return response;
     }
 
-
     @POST
     @Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addRetrospective(@HeaderParam("token") String token, RetroEventDTO temporaryRetroEvent) {
+    public Response addRetrospective(@HeaderParam("token") String token, CreateRetroEventDto createRetroEventDTO) {
         Response response;
         if (!userBean.tokenExist(token)) {
             response = Response.status(401).entity("Invalid credentials").build();
         } else {
-            boolean added = retroBean.addRetrospective(temporaryRetroEvent);
+            boolean added = retroBean.addRetrospective(token, createRetroEventDTO);
             if (!added) {
                 response = Response.status(400).entity("Retrospective not created. Verify all fields").build();
             } else {
-                response = Response.status(200).entity("Retrospective created successfuly").build();
+                response = Response.status(200).entity("Retrospective created successfully").build();
             }
         }
         return response;
     }
 
-
     @POST
     @Path("/{id}/addComment")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response newComment(@HeaderParam("token") String token, @PathParam("id") String id, RetroCommentDTO temporaryRetroComment) {
+    public Response newComment(@HeaderParam("token") String token, @PathParam("id") int id, AddCommentDto temporaryRetroComment) {
         Response response;
         if (!userBean.tokenExist(token)) {
             response = Response.status(401).entity("Invalid credentials").build();
         } else {
-            boolean added = retroBean.addCommentToRetrospective(id, temporaryRetroComment);
+            boolean added = retroBean.addCommentToRetrospective(token, id, temporaryRetroComment);
             if (!added) {
                 response = Response.status(400).entity("Comment not created. Verify all fields").build();
             } else {
@@ -175,7 +173,7 @@ public class RetroService {
     @POST
     @Path("/{id}/addMember/{id2}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response newMember(@HeaderParam("token") String token, @PathParam("id") String id, @PathParam("id2") String id2) {
+    public Response newMember(@HeaderParam("token") String token, @PathParam("id") int id, @PathParam("id2") int id2) {
         Response response;
         if (!userBean.tokenExist(token)) {
             response = Response.status(401).entity("Invalid credentials").build();
@@ -194,7 +192,7 @@ public class RetroService {
     @Path("/{id}/editComment/{id2}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response editComment(@HeaderParam("token") String token, @PathParam("id") String id, @PathParam("id2") String id2, RetroCommentDTO temporaryRetroComment) {
+    public Response editComment(@HeaderParam("token") String token, @PathParam("id") int id, @PathParam("id2") int id2, AddCommentDto temporaryRetroComment) {
         Response response;
         if (!userBean.tokenExist(token)) {
             response = Response.status(401).entity("Invalid credentials").build();
@@ -212,7 +210,7 @@ public class RetroService {
     @DELETE
     @Path("/{id}/deleteComment/{id2}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteComment(@HeaderParam("token") String token, @PathParam("id") String id, @PathParam("id2") String id2) {
+    public Response deleteComment(@HeaderParam("token") String token, @PathParam("id") int id, @PathParam("id2") int id2) {
         Response response;
         if (!userBean.tokenExist(token)) {
             response = Response.status(401).entity("Invalid credentials").build();
@@ -230,7 +228,7 @@ public class RetroService {
     @DELETE
     @Path("/{id}/deleteAllComments")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAllComments(@HeaderParam("token") String token, @PathParam("id") String id) {
+    public Response deleteAllComments(@HeaderParam("token") String token, @PathParam("id") int id) {
         Response response;
         if (!userBean.tokenExist(token)) {
             response = Response.status(401).entity("Invalid credentials").build();
@@ -245,4 +243,3 @@ public class RetroService {
         return response;
     }
 }
-

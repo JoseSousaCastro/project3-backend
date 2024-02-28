@@ -1,18 +1,14 @@
 package aor.paj.proj3_vc_re_jc.entity;
 
-
-
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Set;
 
-
 @Entity
 @Table(name = "task_category")
 @NamedQuery(name = "Category.findCategoryByName", query = "SELECT c FROM CategoryEntity c WHERE c.categoryName = :name")
 @NamedQuery(name = "Category.findCategoryById", query = "SELECT c FROM CategoryEntity c WHERE c.id = :id")
-
 
 public class CategoryEntity implements Serializable {
 
@@ -56,4 +52,3 @@ public class CategoryEntity implements Serializable {
         this.tasks = tasks;
     }
 }
-

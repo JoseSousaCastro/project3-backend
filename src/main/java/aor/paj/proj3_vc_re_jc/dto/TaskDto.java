@@ -1,12 +1,11 @@
 package aor.paj.proj3_vc_re_jc.dto;
 
-
 import aor.paj.proj3_vc_re_jc.enums.TaskPriority;
 import aor.paj.proj3_vc_re_jc.enums.TaskState;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import java.time.LocalDate;
 
+import java.time.LocalDate;
 
 @XmlRootElement
 public class TaskDto {
@@ -28,7 +27,6 @@ public class TaskDto {
     private Boolean deleted;
     @XmlElement
     private String category;
-
 
     public TaskDto() {
     }

@@ -1,6 +1,5 @@
 package aor.paj.proj3_vc_re_jc.dao;
 
-
 import aor.paj.proj3_vc_re_jc.entity.CategoryEntity;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;
@@ -13,7 +12,6 @@ public class CategoryDao extends AbstractDao<CategoryEntity> {
     public CategoryDao() {
         super(CategoryEntity.class);
     }
-
 
     public CategoryEntity findCategoryById(int id) {
         try {
@@ -35,4 +33,3 @@ public class CategoryDao extends AbstractDao<CategoryEntity> {
         }
     }
 }
-

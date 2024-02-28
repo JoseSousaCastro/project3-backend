@@ -1,7 +1,5 @@
 package aor.paj.proj3_vc_re_jc.dto;
 
-
-
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
@@ -27,13 +25,9 @@ public class EditDto {
     @XmlElement
     private String username;
 
-
-
     public String getUsername() {
         return username;
     }
-
-
 
     public boolean getDeleted() {
         return deleted;
@@ -80,8 +74,6 @@ public class EditDto {
         this.firstName = firstName;
     }
 
-
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -94,4 +86,3 @@ public class EditDto {
         this.photoURL = photoURL;
     }
 }
-

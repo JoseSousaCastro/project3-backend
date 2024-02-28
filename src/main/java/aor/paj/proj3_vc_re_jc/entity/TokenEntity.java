@@ -1,15 +1,12 @@
 package aor.paj.proj3_vc_re_jc.entity;
 
-
-
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
 
-
 @Entity
-@Table(name="token")
+@Table(name = "token")
 @NamedQuery(name = "Token.findTokenById", query = "SELECT DISTINCT u FROM TokenEntity u WHERE u.id = :token")
 
 public class TokenEntity implements Serializable {
@@ -19,10 +16,10 @@ public class TokenEntity implements Serializable {
     @Column(name = "id", nullable = true, unique = true, updatable = true)
     private String id;
 
-    @Column(name="token_expiration", nullable = true, unique = false, updatable = true)
+    @Column(name = "token_expiration", nullable = true, unique = false, updatable = true)
     private Instant tokenExpiration;
 
-    @Column(name="deleted", nullable = false, unique = false, updatable = true)
+    @Column(name = "deleted", nullable = false, unique = false, updatable = true)
     private boolean deleted;
 
     /*@OneToOne(mappedBy = "token", cascade = CascadeType.ALL)
@@ -56,7 +53,3 @@ public class TokenEntity implements Serializable {
         this.deleted = deleted;
     }
 }
-
-
-
-

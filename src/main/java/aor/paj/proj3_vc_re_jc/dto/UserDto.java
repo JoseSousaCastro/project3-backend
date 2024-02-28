@@ -1,13 +1,7 @@
 package aor.paj.proj3_vc_re_jc.dto;
 
-
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-
-import java.util.ArrayList;
 
 @XmlRootElement
 public class UserDto {
@@ -37,12 +31,9 @@ public class UserDto {
     public UserDto() {
     }
 
-
-
     public String getUsername() {
         return username;
     }
-
 
     public String getPassword() {
         return password;
@@ -88,7 +79,6 @@ public class UserDto {
         this.firstName = firstName;
     }
 
-
     public String getLastName() {
         return lastName;
     }
@@ -97,7 +87,6 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-
     public String getPhone() {
         return phone;
     }
@@ -105,7 +94,6 @@ public class UserDto {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
 
     public String getPhotoURL() {
         return photoURL;
@@ -122,6 +110,4 @@ public class UserDto {
     public void setToken(String token) {
         this.token = token;
     }
-
-
 }
