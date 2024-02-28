@@ -257,7 +257,7 @@ public class TaskService {
     @Path("/category/add")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addCategory(@HeaderParam("token") String token, @HeaderParam("name") String category) {
+    public Response addCategory(@HeaderParam("token") String token, CategoryDto category) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
