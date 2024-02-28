@@ -209,12 +209,7 @@ public class TaskService {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        Response removedMessage = taskBean.removeTask(token, taskId);
-        if (removedMessage == null) {
-            return Response.status(200).entity("Task moved to recycle bin successfully").build();
-        } else {
-            return Response.status(404).entity(removedMessage).build();
-        }
+        return taskBean.removeTask(token, taskId);
     }
 
     // Restore Task from Recycle bin
@@ -257,7 +252,7 @@ public class TaskService {
     @Path("/category/add")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addCategory(@HeaderParam("token") String token, @HeaderParam("name") String category) {
+    public Response addCategory(@HeaderParam("token") String token, CategoryDto category) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
