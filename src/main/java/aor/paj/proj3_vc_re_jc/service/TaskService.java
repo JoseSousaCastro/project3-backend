@@ -209,12 +209,7 @@ public class TaskService {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        Response removedMessage = taskBean.removeTask(token, taskId);
-        if (removedMessage == null) {
-            return Response.status(200).entity("Task moved to recycle bin successfully").build();
-        } else {
-            return Response.status(404).entity(removedMessage).build();
-        }
+        return taskBean.removeTask(token, taskId);
     }
 
     // Restore Task from Recycle bin
