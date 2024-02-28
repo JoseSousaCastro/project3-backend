@@ -61,12 +61,12 @@ public class TaskBean implements Serializable {
         }
     }
 
-    public Response removeAllUserTasks(LoginDto user, RoleDto roleDto) {
+    public Response removeAllUserTasks(RoleDto roleDto) {
         // Convert integer role to UserRole enum
         UserRole userRole = roleDto.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
-            UserEntity userEntity = userDao.findUserByUsername(user.getUsername());
+            UserEntity userEntity = userDao.findUserByUsername(roleDto.getUsername());
             if (userEntity != null) {
                 ArrayList<TaskEntity> tasks = taskDao.findTasksByUser(userEntity);
                 if (tasks != null) {
@@ -85,13 +85,21 @@ public class TaskBean implements Serializable {
         }
     }
 
-    public boolean restoreDeletedTask(int id) {
-        TaskEntity t = taskDao.findTaskById(id);
-        if (t != null) {
-            t.setDeleted(false);
-            return true;
+    public Response restoreDeletedTask(int id, RoleDto roleDto) {
+        // Convert integer role to UserRole enum
+        UserRole userRole = roleDto.getRole();
+        // Check if the user is a PRODUCT_OWNER
+        if (userRole == UserRole.PRODUCT_OWNER) {
+            TaskEntity t = taskDao.findTaskById(id);
+            if (t != null) {
+                t.setDeleted(false);
+                return Response.status(200).entity("Tasks restored successfully").build();
+            } else {
+                return Response.status(404).entity("Deleted task with this id not found").build();
+            }
+        } else {
+            return Response.status(401).entity("Unauthorized: Only SCRUM_MASTER or PRODUCT_OWNER can access user tasks").build(); // Unauthorized access
         }
-        return false;
     }
 
     public Response removeTaskPermanently(int id, RoleDto user) {
@@ -128,12 +136,12 @@ public class TaskBean implements Serializable {
         }
     }
 
-    public Response getUserTasks(LoginDto user, RoleDto roleDto) {
+    public Response getUserTasks(RoleDto roleDto) {
         // Convert integer role to UserRole enum
         UserRole userRole = roleDto.getRole();
         // Check if the user is a SCRUM_MASTER or PRODUCT_OWNER
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
-            UserEntity userEntity = userDao.findUserByUsername(user.getUsername());
+            UserEntity userEntity = userDao.findUserByUsername(roleDto.getUsername());
             if (userEntity != null) {
                 ArrayList<TaskEntity> tasks = taskDao.findTasksByUser(userEntity);
                 if (tasks != null && !tasks.isEmpty()) {
@@ -167,9 +175,7 @@ public class TaskBean implements Serializable {
         }
     }
 
-    public Response getCategoryTasks(CategoryDto category, RoleDto roleDto) {
-        // Convert integer role to UserRole enum
-        UserRole userRole = roleDto.getRole();
+    public Response getCategoryTasks(CategoryDto category, UserRole userRole) {
         // Check if the user is a SCRUM_MASTER or PRODUCT_OWNER
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
             CategoryEntity ctgEntity = categoryDao.findCategoryById(category.getId());
@@ -189,14 +195,11 @@ public class TaskBean implements Serializable {
         }
     }
 
-
-    public boolean updateTask(TaskDto taskDto, CategoryEntity taskCategory, RoleDto user) {
-        // Convert integer role to UserRole enum
-        UserRole userRole = user.getRole();
+    public boolean updateTask(UserRole userRole, String username, TaskDto taskDto, CategoryEntity taskCategory) {
         TaskEntity t;
         // Check if the user is a DEVELOPER
         if (userRole == UserRole.DEVELOPER) {
-            t = taskDao.findTaskByIdAndUser(taskDto.getId(), user.getUsername());
+            t = taskDao.findTaskByIdAndUser(taskDto.getId(), username);
         } else {
             t = taskDao.findTaskById(taskDto.getId());
         }

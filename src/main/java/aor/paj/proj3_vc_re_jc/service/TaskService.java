@@ -62,11 +62,11 @@ public class TaskService {
     @GET
     @Path("/userTasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllUserTasks(@HeaderParam("token") String token, LoginDto user, RoleDto roleDto) {
+    public Response getAllUserTasks(@HeaderParam("token") String token, RoleDto roleDto) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return taskBean.getUserTasks(user, roleDto);
+        return taskBean.getUserTasks(roleDto);
     }
 
     // Return all deleted Tasks
@@ -84,11 +84,11 @@ public class TaskService {
     @GET
     @Path("/categoryTasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllCategoryTasks(@HeaderParam("token") String token, CategoryDto category, RoleDto user) {
+    public Response getAllCategoryTasks(@HeaderParam("token") String token, @HeaderParam("userRole") UserRole userRole, CategoryDto category) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return taskBean.getCategoryTasks(category, user);
+        return taskBean.getCategoryTasks(category, userRole);
     }
 
     // Add Task
@@ -141,7 +141,7 @@ public class TaskService {
     @PUT
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateTask(@HeaderParam("token") String token, TaskDto task, RoleDto user) {
+    public Response updateTask(@HeaderParam("token") String token, @HeaderParam("userRole") UserRole userRole, @HeaderParam("username") String username, TaskDto task) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
@@ -169,7 +169,7 @@ public class TaskService {
         if (category == null) {
             return Response.status(400).entity("Category does not exist").build();
         }
-        boolean updated = taskBean.updateTask(task, category, user);
+        boolean updated = taskBean.updateTask(userRole, username, task, category);
         if (updated) {
             return Response.status(200).entity("Task updated successfully").build();
         } else {
@@ -207,11 +207,11 @@ public class TaskService {
     @PUT
     @Path("/updateDeleted")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateDeleted(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId, RoleDto user) {
+    public Response updateDeleted(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId, RoleDto userRole) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        Response removedMessage = taskBean.removeTask(taskId, user);
+        Response removedMessage = taskBean.removeTask(taskId, userRole);
         if (removedMessage == null) {
             return Response.status(200).entity("Task moved to recycle bin successfully").build();
         } else {
@@ -223,27 +223,22 @@ public class TaskService {
     @PUT
     @Path("/restoreDeleted")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateRestoreTask(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId) {
+    public Response updateRestoreTask(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId, RoleDto userRole) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        boolean removed = taskBean.restoreDeletedTask(taskId);
-        if (removed) {
-            return Response.status(200).entity("Task restored successfully").build();
-        } else {
-            return Response.status(404).entity("Task with this id not found").build();
-        }
+        return taskBean.restoreDeletedTask(taskId, userRole);
     }
 
     // Remove Task Permanently
     @DELETE
     @Path("/remove")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response removeTask(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId, RoleDto user) {
+    public Response removeTask(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId, RoleDto userRole) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return taskBean.removeTaskPermanently(taskId, user);
+        return taskBean.removeTaskPermanently(taskId, userRole);
 
     }
 
@@ -252,11 +247,11 @@ public class TaskService {
     @Path("/updateDeleted/userTasks")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAllUserTasks(@HeaderParam("token") String token, LoginDto user, RoleDto roleDto) {
+    public Response deleteAllUserTasks(@HeaderParam("token") String token, RoleDto roleDto) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return taskBean.removeAllUserTasks(user, roleDto);
+        return taskBean.removeAllUserTasks(roleDto);
     }
 
     // Add Task Category
@@ -278,24 +273,24 @@ public class TaskService {
     @DELETE
     @Path("/category/remove")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response removeCategory(@HeaderParam("token") String token, CategoryDto category, RoleDto user) {
+    public Response removeCategory(@HeaderParam("token") String token, @HeaderParam("userRole") UserRole userRole, CategoryDto category) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return ctgBean.removeCategory(category, user);
+        return ctgBean.removeCategory(category, userRole);
     }
 
     // Update Task Category
     @PUT
     @Path("/category/update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateCategory(@HeaderParam("token") String token, CategoryDto category, RoleDto user) {
+    public Response updateCategory(@HeaderParam("token") String token, @HeaderParam("userRole") UserRole userRole, CategoryDto category) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
         if (category == null || category.getName() == null || category.getName().isEmpty()) {
             return Response.status(400).entity("Category name cannot be empty").build();
         }
-        return ctgBean.updateCategoryName(category, user);
+        return ctgBean.updateCategoryName(category, userRole);
     }
 }
