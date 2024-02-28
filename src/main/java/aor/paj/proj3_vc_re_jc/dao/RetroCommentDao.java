@@ -9,11 +9,10 @@ import java.util.List;
 @Stateless
 public class RetroCommentDao extends AbstractDao<RetroCommentEntity> {
 
-    private final EntityManager em;
+    private static final long serialVersionUID = 1L;
 
-    public RetroCommentDao(EntityManager em) {
+    public RetroCommentDao() {
         super(RetroCommentEntity.class);
-        this.em = em;
     }
 
     public void saveRetroComment(RetroCommentEntity retroComment) {
