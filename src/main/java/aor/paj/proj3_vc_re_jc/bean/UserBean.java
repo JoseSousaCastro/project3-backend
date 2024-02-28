@@ -12,6 +12,7 @@ import jakarta.ejb.Stateless;
 import org.hibernate.annotations.Check;
 import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 
+import javax.management.relation.Role;
 import java.io.Serializable;
 import java.security.SecureRandom;
 import java.time.Instant;
@@ -146,6 +147,16 @@ public class UserBean implements Serializable {
             t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));
             userDao.persist(u);
         }
+    }
+
+    public RoleDto getRole (String token) {
+        UserEntity u = userDao.findUserByToken(token);
+        RoleDto dto = new RoleDto();
+        if (u!=null) {
+            dto.setRole(u.getRole());
+            return dto;
+        }
+        else return null;
     }
 
 
