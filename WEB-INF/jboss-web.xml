@@ -1,0 +1,3 @@
+<jboss-web>
+    <context-root>project3-backend</context-root>
+</jboss-web>
