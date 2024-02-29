@@ -10,6 +10,9 @@ public class CheckProfileDto {
     private String username;
 
     @XmlElement
+    private int id;
+
+    @XmlElement
     private String email;
 
     @XmlElement
@@ -31,6 +34,14 @@ public class CheckProfileDto {
     private boolean deleted;
 
     public CheckProfileDto() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {

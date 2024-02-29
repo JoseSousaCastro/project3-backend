@@ -15,7 +15,8 @@ import jakarta.persistence.*;
 @NamedQuery(name = "User.findUserByEmail", query = "SELECT u FROM UserEntity u WHERE u.email = :email")
 @NamedQuery(name = "User.findUserByToken", query = "SELECT DISTINCT u FROM UserEntity u WHERE u.tokenId = :token")
 @NamedQuery(name = "User.findAllUsers", query = "SELECT u FROM UserEntity u")
-public class UserEntity implements Serializable {
+@NamedQuery(name ="User.findUserById", query = "SELECT u FROM UserEntity u WHERE u.id = :id")
+public class UserEntity implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
@@ -88,6 +89,9 @@ public class UserEntity implements Serializable {
         this.email = email;
     }
 
+    public int getRoleInt () {
+        return role;
+    }
 
     public UserRole getRole() {
         return UserRole.valueOf(this.role);

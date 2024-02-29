@@ -99,9 +99,9 @@ public class UserService {
     @Path("/editOtherProfile")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response editOtherProfile(@HeaderParam("token") String token, EditDto user) {
+    public Response editOtherProfile (@HeaderParam("token") String token, EditOtherDto user) {
         if (userBean.tokenExist(token)) {
-            userBean.updateProfile(user, token);
+            userBean.updateOtherProfile(token,user);
             return Response.status(200).entity("Profile updated!").build();
         } else {
             userBean.logout(token);
@@ -157,6 +157,20 @@ public class UserService {
             userBean.updateRole(user, token);
             return Response.status(200).entity("Role updated").build();
         } else {
+            userBean.logout(token);
+            return Response.status(401).entity("Invalid Token!").build();
+        }
+    }
+
+    @GET
+    @Path("/userById")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response userById (@HeaderParam("id") Integer id, @HeaderParam("token") String token) {
+        if (userBean.tokenExist(token)){
+            CheckProfileDto dto = userBean.userById(id,token);
+            return Response.status(200).entity(dto).build();
+        }else {
             userBean.logout(token);
             return Response.status(401).entity("Invalid Token!").build();
         }
