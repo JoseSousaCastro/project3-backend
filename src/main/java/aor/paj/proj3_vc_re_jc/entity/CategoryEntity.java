@@ -20,7 +20,7 @@ public class CategoryEntity implements Serializable {
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private int id;
 
-    @Column(name = "name", nullable = false, unique = true, updatable = false)
+    @Column(name = "name", nullable = false, unique = true, updatable = true)
     private String categoryName;
 
     @OneToMany(mappedBy = "category")
