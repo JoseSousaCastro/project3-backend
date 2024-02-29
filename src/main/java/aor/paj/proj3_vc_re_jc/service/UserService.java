@@ -166,6 +166,20 @@ public class UserService {
             return Response.status(401).entity("Invalid Token!").build();
         }
     }
+
+    @GET
+    @Path("/userById")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response userById (@HeaderParam("id") Integer id, @HeaderParam("token") String token) {
+        if (userBean.tokenExist(token)){
+            CheckProfileDto dto = userBean.userById(id,token);
+            return Response.status(200).entity(dto).build();
+        }else {
+            userBean.logout(token);
+            return Response.status(401).entity("Invalid Token!").build();
+        }
+    }
 }
 
 
