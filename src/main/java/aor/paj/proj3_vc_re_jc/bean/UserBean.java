@@ -210,6 +210,7 @@ public class UserBean implements Serializable {
             checkU.setRole(u.getRole().getValue());
             checkU.setPhotoURL(u.getPhotoURL());
             checkU.setDeleted(u.isDeleted());
+            checkU.setId(u.getId());
             dtos.add(checkU);
         }
         t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));
@@ -225,5 +226,38 @@ public class UserBean implements Serializable {
             userDao.persist(u);
 
         }
+    }
+
+    public CheckProfileDto userById (int id, String token) {
+        TokenEntity t = tokenDao.findTokenById(token);
+        UserEntity u = userDao.findUserById(id);
+        CheckProfileDto dto = new CheckProfileDto();
+        if (u != null) {
+            dto.setUsername(u.getUsername());
+            dto.setEmail(u.getEmail());
+            dto.setPhone(u.getPhone());
+            dto.setRole(u.getRoleInt());
+            dto.setEmail(u.getEmail());
+            dto.setLastName(u.getLastName());
+            dto.setFirstName(u.getFirstName());
+            t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));
+        }
+        return dto;
+    }
+
+    public void updateOtherProfile (String token, EditOtherDto dto) {
+        TokenEntity t = tokenDao.findTokenById(token);
+        UserEntity u = userDao.findUserByUsername(dto.getUsername());
+        if (u!=null) {
+            u.setUsername(dto.getUsername());
+            u.setEmail(dto.getEmail());
+            u.setFirstName(dto.getFirstName());
+            u.setLastName(dto.getLastName());
+            u.setPhone(dto.getPhone());
+            u.setDeleted(dto.isDeleted());
+            u.setRole(dto.getRole());
+            t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));
+        }
+
     }
 }

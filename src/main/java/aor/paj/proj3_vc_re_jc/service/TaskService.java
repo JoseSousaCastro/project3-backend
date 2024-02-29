@@ -31,7 +31,6 @@ public class TaskService {
     @EJB
     CategoryDao categoryDao;
 
-
     // Return all Tasks
     @GET
     @Path("/all")
@@ -42,7 +41,6 @@ public class TaskService {
         }
         return taskBean.getAllTasks();
     }
-
 
     // Return Task by Id
     @GET
@@ -64,33 +62,33 @@ public class TaskService {
     @GET
     @Path("/userTasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllUserTasks(@HeaderParam("token") String token, RoleDto roleDto) {
+    public Response getAllUserTasks(@HeaderParam("token") String token) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return taskBean.getUserTasks(roleDto);
+        return taskBean.getUserTasks(token);
     }
 
     // Return all deleted Tasks
     @GET
     @Path("/deletedTasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllDeletedTasks(@HeaderParam("token") String token, RoleDto user) {
+    public Response getAllDeletedTasks(@HeaderParam("token") String token) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return taskBean.getDeletedTasks(user);
+        return taskBean.getDeletedTasks(token);
     }
 
     // Return all Tasks with same Category
     @GET
     @Path("/categoryTasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllCategoryTasks(@HeaderParam("token") String token, @HeaderParam("userRole") UserRole userRole, CategoryDto category) {
+    public Response getAllCategoryTasks(@HeaderParam("token") String token, CategoryDto category) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return taskBean.getCategoryTasks(category, userRole);
+        return taskBean.getCategoryTasks(token, category);
     }
 
     // Add Task
@@ -143,7 +141,7 @@ public class TaskService {
     @PUT
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateTask(@HeaderParam("token") String token, @HeaderParam("userRole") UserRole userRole, @HeaderParam("username") String username, TaskDto task) {
+    public Response updateTask(@HeaderParam("token") String token, TaskDto task) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
@@ -171,7 +169,7 @@ public class TaskService {
         if (category == null) {
             return Response.status(400).entity("Category does not exist").build();
         }
-        boolean updated = taskBean.updateTask(userRole, username, task, category);
+        boolean updated = taskBean.updateTask(token, task, category);
         if (updated) {
             return Response.status(200).entity("Task updated successfully").build();
         } else {
@@ -209,38 +207,33 @@ public class TaskService {
     @PUT
     @Path("/updateDeleted")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateDeleted(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId, RoleDto userRole) {
+    public Response updateDeleted(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        Response removedMessage = taskBean.removeTask(taskId, userRole);
-        if (removedMessage == null) {
-            return Response.status(200).entity("Task moved to recycle bin successfully").build();
-        } else {
-            return Response.status(404).entity(removedMessage).build();
-        }
+        return taskBean.removeTask(token, taskId);
     }
 
     // Restore Task from Recycle bin
     @PUT
     @Path("/restoreDeleted")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateRestoreTask(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId, RoleDto userRole) {
+    public Response updateRestoreTask(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return taskBean.restoreDeletedTask(taskId, userRole);
+        return taskBean.restoreDeletedTask(token, taskId);
     }
 
     // Remove Task Permanently
     @DELETE
     @Path("/remove")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response removeTask(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId, RoleDto userRole) {
+    public Response removeTask(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return taskBean.removeTaskPermanently(taskId, userRole);
+        return taskBean.removeTaskPermanently(token, taskId);
 
     }
 
@@ -249,11 +242,22 @@ public class TaskService {
     @Path("/updateDeleted/userTasks")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAllUserTasks(@HeaderParam("token") String token, RoleDto roleDto) {
+    public Response deleteAllUserTasks(@HeaderParam("token") String token) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return taskBean.removeAllUserTasks(roleDto);
+        return taskBean.removeAllUserTasks(token);
+    }
+
+    // Return all Categories
+    @GET
+    @Path("/category/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllCategories(@HeaderParam("token") String token) {
+        if (!userBean.tokenExist(token)) {
+            return Response.status(401).entity("Invalid token").build();
+        }
+        return ctgBean.getAllCategories();
     }
 
     // Add Task Category
@@ -261,38 +265,38 @@ public class TaskService {
     @Path("/category/add")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addCategory(@HeaderParam("token") String token, @HeaderParam("name") String category, RoleDto user) {
+    public Response addCategory(@HeaderParam("token") String token, CategoryDto category) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
         if (category == null) {
             return Response.status(400).entity("Category name cannot be empty").build();
         }
-        return ctgBean.addCategory(category, user);
+        return ctgBean.addCategory(token, category);
     }
 
     // Remove Task Category
     @DELETE
     @Path("/category/remove")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response removeCategory(@HeaderParam("token") String token, @HeaderParam("userRole") UserRole userRole, CategoryDto category) {
+    public Response removeCategory(@HeaderParam("token") String token, CategoryDto category) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return ctgBean.removeCategory(category, userRole);
+        return ctgBean.removeCategory(token, category);
     }
 
     // Update Task Category
     @PUT
     @Path("/category/update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateCategory(@HeaderParam("token") String token, @HeaderParam("userRole") UserRole userRole, CategoryDto category) {
+    public Response updateCategory(@HeaderParam("token") String token, CategoryDto category) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
         if (category == null || category.getName() == null || category.getName().isEmpty()) {
             return Response.status(400).entity("Category name cannot be empty").build();
         }
-        return ctgBean.updateCategoryName(category, userRole);
+        return ctgBean.updateCategoryName(token, category);
     }
 }
