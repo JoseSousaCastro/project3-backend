@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @Stateless
 public class CategoryDao extends AbstractDao<CategoryEntity> {
 
-    private static final long serialVersionUID = 11L;
+    private static final long serialVersionUID = 1L;
 
     public CategoryDao() {
         super(CategoryEntity.class);

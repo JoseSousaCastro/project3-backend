@@ -24,6 +24,8 @@ import java.util.List;
 @Stateless
 public class UserBean implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @EJB
     UserDao userDao;
 

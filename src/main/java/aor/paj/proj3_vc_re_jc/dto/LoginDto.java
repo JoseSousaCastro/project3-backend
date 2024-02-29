@@ -5,6 +5,9 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class LoginDto {
+
+    private static final long serialVersionUID = 1L;
+
     @XmlElement
     private String username;
     @XmlElement

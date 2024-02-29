@@ -4,6 +4,8 @@ import jakarta.xml.bind.annotation.XmlElement;
 
 public class CategoryDto {
 
+    private static final long serialVersionUID = 1L;
+
     @XmlElement
     private int id;
     @XmlElement

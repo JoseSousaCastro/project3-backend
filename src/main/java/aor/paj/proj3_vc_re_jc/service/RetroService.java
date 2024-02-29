@@ -16,6 +16,8 @@ import java.util.List;
 @Stateless
 public class RetroService {
 
+    private static final long serialVersionUID = 1L;
+
     @EJB
     RetroBean retroBean;
     @EJB

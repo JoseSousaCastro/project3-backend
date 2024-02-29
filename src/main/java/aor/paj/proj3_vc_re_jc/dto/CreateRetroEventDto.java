@@ -7,6 +7,9 @@ import java.time.LocalDate;
 
 @XmlRootElement
 public class CreateRetroEventDto {
+
+    private static final long serialVersionUID = 1L;
+
     @XmlElement
     private String title;
     @XmlElement

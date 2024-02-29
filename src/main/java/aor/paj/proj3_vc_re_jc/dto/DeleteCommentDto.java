@@ -5,6 +5,9 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class DeleteCommentDto {
+
+    private static final long serialVersionUID = 1L;
+
     @XmlElement
     private int commentId;
 

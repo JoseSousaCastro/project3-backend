@@ -5,6 +5,9 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class AddCommentDto {
+
+    private static final long serialVersionUID = 1L;
+
     @XmlElement
     private int userId;
     @XmlElement

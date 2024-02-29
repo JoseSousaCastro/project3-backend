@@ -20,6 +20,8 @@ import java.util.ArrayList;
 @Path("/tasks")
 public class TaskService {
 
+    private static final long serialVersionUID = 1L;
+
     @Inject
     UserBean userBean;
     @Inject

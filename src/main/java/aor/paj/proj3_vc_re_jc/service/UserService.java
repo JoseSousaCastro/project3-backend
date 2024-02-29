@@ -14,6 +14,8 @@ import java.util.ArrayList;
 @Path("/users")
 public class UserService {
 
+    private static final long serialVersionUID = 1L;
+
     @Inject
     UserBean userBean;
     @Inject
