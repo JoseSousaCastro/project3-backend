@@ -101,9 +101,9 @@ public class UserService {
     @Path("/editOtherProfile")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response editOtherProfile (@HeaderParam("token") String token, EditDto user) {
+    public Response editOtherProfile (@HeaderParam("token") String token, EditOtherDto user) {
         if (userBean.tokenExist(token)) {
-            userBean.updateProfile(user,token);
+            userBean.updateOtherProfile(token,user);
             return Response.status(200).entity("Profile updated!").build();
         }
         else {

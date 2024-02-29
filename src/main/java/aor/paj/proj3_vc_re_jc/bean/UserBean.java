@@ -246,6 +246,22 @@ public class UserBean implements Serializable {
         }
         return dto;
     }
+
+    public void updateOtherProfile (String token, EditOtherDto dto) {
+        TokenEntity t = tokenDao.findTokenById(token);
+        UserEntity u = userDao.findUserByUsername(dto.getUsername());
+        if (u!=null) {
+            u.setUsername(dto.getUsername());
+            u.setEmail(dto.getEmail());
+            u.setFirstName(dto.getFirstName());
+            u.setLastName(dto.getLastName());
+            u.setPhone(dto.getPhone());
+            u.setDeleted(dto.isDeleted());
+            u.setRole(dto.getRole());
+            t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));
+        }
+
+    }
 }
 
 
