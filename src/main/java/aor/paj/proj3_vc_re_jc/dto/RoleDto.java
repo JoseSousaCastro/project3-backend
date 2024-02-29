@@ -10,6 +10,8 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class RoleDto {
 
+    private static final long serialVersionUID = 1L;
+
     @XmlElement
     private UserRole role;
 

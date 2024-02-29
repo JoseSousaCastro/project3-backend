@@ -21,6 +21,9 @@ import java.util.ArrayList;
 
 @Stateless
 public class TaskBean implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @EJB
     TaskDao taskDao;
     @EJB

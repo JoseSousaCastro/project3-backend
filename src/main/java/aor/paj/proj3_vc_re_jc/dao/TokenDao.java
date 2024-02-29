@@ -7,7 +7,7 @@ import jakarta.persistence.NoResultException;
 @Stateless
 public class TokenDao extends AbstractDao<TokenEntity> {
 
-    private static final long serialVersionUID = 11L;
+    private static final long serialVersionUID = 1L;
 
     public TokenDao() {
         super(TokenEntity.class);

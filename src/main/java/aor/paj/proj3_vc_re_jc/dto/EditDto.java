@@ -6,6 +6,8 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class EditDto {
 
+    private static final long serialVersionUID = 1L;
+
     @XmlElement
     private String password;
     @XmlElement

@@ -54,15 +54,6 @@ public class UserEntity implements Serializable {
     @Column(name = "token_id", nullable = true, unique = true, updatable = true)
     private String tokenId;
 
-/*    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "token_token", referencedColumnName = "id")  //
-    private TokenEntity token;*/
-
-
-
-    /*@Column(name="tokenExpiration", nullable = true, unique = false, updatable = true)
-    private Instant tokenExpiration;*/
-
     @OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
     private Set<TaskEntity> tasks;
 
@@ -70,15 +61,6 @@ public class UserEntity implements Serializable {
     //default empty constructor
     public UserEntity() {
     }
-
-    /*public Instant getTokenExpiration() {
-        return tokenExpiration;
-    }
-
-    public void setTokenExpiration(Instant tokenExpiration) {
-        this.tokenExpiration = tokenExpiration;
-    } */
-
 
     public String getEmail() {
         return email;

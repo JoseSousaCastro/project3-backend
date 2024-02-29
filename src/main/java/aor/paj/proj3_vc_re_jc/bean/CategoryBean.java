@@ -16,6 +16,9 @@ import java.util.ArrayList;
 
 @Stateless
 public class CategoryBean implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @EJB
     CategoryDao categoryDao;
     @EJB

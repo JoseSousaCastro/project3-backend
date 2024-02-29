@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 @XmlRootElement
 public class RetroEventDto {
+
+    private static final long serialVersionUID = 1L;
+
     @XmlElement
     private String id;
     @XmlElement

@@ -13,10 +13,10 @@ import java.util.ArrayList;
 @Stateless
 public class TaskDao extends AbstractDao<TaskEntity> {
 
+    private static final long serialVersionUID = 1L;
+
     @EJB
     private CategoryDao categoryDao;
-
-    private static final long serialVersionUID = 13L;
 
     public TaskDao() {
         super(TaskEntity.class);
