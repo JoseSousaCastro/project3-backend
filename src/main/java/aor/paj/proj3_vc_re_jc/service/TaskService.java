@@ -247,6 +247,17 @@ public class TaskService {
         return taskBean.removeAllUserTasks(token);
     }
 
+    // Return all Categories
+    @GET
+    @Path("/category/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllCategories(@HeaderParam("token") String token) {
+        if (!userBean.tokenExist(token)) {
+            return Response.status(401).entity("Invalid token").build();
+        }
+        return ctgBean.getAllCategories();
+    }
+
     // Add Task Category
     @POST
     @Path("/category/add")

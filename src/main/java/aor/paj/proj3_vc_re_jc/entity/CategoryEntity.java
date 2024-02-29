@@ -7,6 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "task_category")
+@NamedQuery(name = "Category.findAllCategories", query = "SELECT c FROM CategoryEntity c")
 @NamedQuery(name = "Category.findCategoryByName", query = "SELECT c FROM CategoryEntity c WHERE c.categoryName = :name")
 @NamedQuery(name = "Category.findCategoryById", query = "SELECT c FROM CategoryEntity c WHERE c.id = :id")
 

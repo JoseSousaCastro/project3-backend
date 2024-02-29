@@ -5,6 +5,7 @@ import aor.paj.proj3_vc_re_jc.dao.TaskDao;
 import aor.paj.proj3_vc_re_jc.dao.UserDao;
 import aor.paj.proj3_vc_re_jc.dto.CategoryDto;
 import aor.paj.proj3_vc_re_jc.dto.RoleDto;
+import aor.paj.proj3_vc_re_jc.dto.TaskDto;
 import aor.paj.proj3_vc_re_jc.entity.CategoryEntity;
 import aor.paj.proj3_vc_re_jc.entity.TaskEntity;
 import aor.paj.proj3_vc_re_jc.entity.UserEntity;
@@ -26,6 +27,28 @@ public class CategoryBean implements Serializable {
     UserDao userDao;
 
     public CategoryBean() {
+    }
+
+    public Response getAllCategories() {
+        ArrayList<CategoryEntity> categories = categoryDao.findAllCategories();
+        if (categories != null && !categories.isEmpty()) {
+            ArrayList<CategoryDto> ctgDtos = convertCategoriesFromEntityListToDtoList(categories);
+            return Response.status(200).entity(ctgDtos).build(); // Successful response with tasks
+        } else {
+            return Response.status(404).entity("No categories found").build();
+        }
+    }
+
+
+    // EM AVALIAÇÃO
+    public Response getCategorybyId() {
+        ArrayList<CategoryEntity> categories = categoryDao.findAllCategories();
+        if (categories != null && !categories.isEmpty()) {
+            ArrayList<CategoryDto> ctgDtos = convertCategoriesFromEntityListToDtoList(categories);
+            return Response.status(200).entity(ctgDtos).build(); // Successful response with tasks
+        } else {
+            return Response.status(404).entity("No categories found").build();
+        }
     }
 
     public Response addCategory(String token, CategoryDto category) {
@@ -101,6 +124,14 @@ public class CategoryBean implements Serializable {
         ctgDto.setId(c.getId());
         ctgDto.setName(c.getCategoryName());
         return ctgDto;
+    }
+
+    private ArrayList<CategoryDto> convertCategoriesFromEntityListToDtoList(ArrayList<CategoryEntity> ctgEntityEntities) {
+        ArrayList<CategoryDto> ctgDtos = new ArrayList<>();
+        for (CategoryEntity c : ctgEntityEntities) {
+            ctgDtos.add(convertCategoryFromEntityToDto(c));
+        }
+        return ctgDtos;
     }
 
 }
