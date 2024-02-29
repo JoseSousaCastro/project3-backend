@@ -114,12 +114,15 @@ public class UserService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(@HeaderParam("token") String token, UserDto user) {
         if (userBean.tokenExist(token)) {
-            userBean.createUser(token, user);
-            return Response.status(200).entity("Profile updated!").build();
-        } else {
-            userBean.logout(token);
-            return Response.status(401).entity("Invalid Token!").build();
+            if (userBean.createUser(token, user)) {
+                return Response.status(200).entity("Profile updated!").build();
+            } else return Response.status(401).entity("Error").build();
         }
+            else {
+                userBean.logout(token);
+                return Response.status(401).entity("Invalid Token!").build();
+            }
+
     }
 
     @GET

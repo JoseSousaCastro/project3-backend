@@ -185,11 +185,23 @@ public class UserBean implements Serializable {
         UserEntity u = userDao.findUserByUsername(user.getUsername());
         TokenEntity t = tokenDao.findTokenById(token);
         if (u == null) {
-            userDao.persist(convertUserDtotoUserEntity(user));
+            System.out.println("Não existe");
+            UserEntity newU = new UserEntity();
+           newU.setUsername(user.getUsername());
+           newU.setDeleted(user.isDeleted());
+           newU.setPhone(user.getPhone());
+           newU.setFirstName(user.getFirstName());
+           newU.setLastName(user.getLastName());
+           newU.setPassword(user.getPassword());
+           newU.setPhotoURL(user.getPhotoURL());
+           newU.setRole(user.getRole());
+           newU.setEmail(user.getEmail());
+            userDao.persist(newU);
             t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));
             return true;
-        } else
+        } else {
             return false;
+    }
     }
 
     public ArrayList<CheckProfileDto> checkAll(String token) {
