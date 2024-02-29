@@ -260,6 +260,23 @@ public class TaskService {
         return ctgBean.getAllCategories();
     }
 
+    // Return Category by Id
+    /*
+    @GET
+    @Path("/task")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUsersTasks(@HeaderParam("token") String token, @HeaderParam("taskId") int taskId) {
+        if (!userBean.tokenExist(token)) {
+            return Response.status(401).entity("Invalid token").build();
+        }
+        TaskDto task = taskBean.getTask(taskId);
+        if (task != null) {
+            return Response.status(200).entity(task).build();
+        } else {
+            return Response.status(404).entity("Task with this id not found").build();
+        }
+    }*/
+
     // Add Task Category
     @POST
     @Path("/category/add")
@@ -269,7 +286,7 @@ public class TaskService {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        if (category == null) {
+        if (category == null || category.getName() == null || category.getName().isEmpty()) {
             return Response.status(400).entity("Category name cannot be empty").build();
         }
         return ctgBean.addCategory(token, category);

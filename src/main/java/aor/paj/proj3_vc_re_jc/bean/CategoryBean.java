@@ -90,7 +90,7 @@ public class CategoryBean implements Serializable {
                     return Response.status(400).entity("Category cannot be removed as there are tasks associated with it").build();
                 }
             } else {
-                return Response.status(404).entity("Category with this name is not found").build();
+                return Response.status(404).entity("Category with this Id is not found").build();
             }
         } else {
             return Response.status(403).entity("Invalid role permissions").build();
