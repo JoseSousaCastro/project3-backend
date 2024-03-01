@@ -39,7 +39,6 @@ public class RetroBean implements Serializable {
                 RetroEventEntity retroEventEntity = new RetroEventEntity();
                 retroEventEntity.setTitle(createRetroEventDTO.getTitle());
                 retroEventEntity.setSchedulingDate(createRetroEventDTO.getSchedulingDate());
-                retroEventEntity.addMember(userEntity);
                 retroEventDao.persist(retroEventEntity);
             }
         }
