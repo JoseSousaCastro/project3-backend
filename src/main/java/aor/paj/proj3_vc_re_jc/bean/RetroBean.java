@@ -9,9 +9,11 @@ import aor.paj.proj3_vc_re_jc.entity.RetroEventEntity;
 import aor.paj.proj3_vc_re_jc.entity.UserEntity;
 import aor.paj.proj3_vc_re_jc.enums.RetroCommentCategory;
 import jakarta.ejb.EJB;
+import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,11 +36,14 @@ public class RetroBean implements Serializable {
         boolean added = true;
         if (userEntity != null) {
             if (createRetroEventDTO.getTitle().isBlank() || createRetroEventDTO.getSchedulingDate() == null) {
+                System.out.println("Title or date is blank" + createRetroEventDTO.getTitle() + createRetroEventDTO.getSchedulingDate());
                 added = false;
             } else {
+                System.out.println("entraste aqui?" + createRetroEventDTO.getTitle() + createRetroEventDTO.getSchedulingDate());
+                LocalDate date = LocalDate.parse(createRetroEventDTO.getSchedulingDate());
                 RetroEventEntity retroEventEntity = new RetroEventEntity();
                 retroEventEntity.setTitle(createRetroEventDTO.getTitle());
-                retroEventEntity.setSchedulingDate(createRetroEventDTO.getSchedulingDate());
+                retroEventEntity.setSchedulingDate(date);
                 retroEventDao.persist(retroEventEntity);
             }
         }
@@ -48,19 +53,25 @@ public class RetroBean implements Serializable {
     public List<CreateRetroEventDto> getRetrospectives() {
         List<RetroEventEntity> retroEventEntities = retroEventDao.getAllRetroEvents();
 
-        // Convert entities to DTOs
-        List<CreateRetroEventDto> retroEventDTOs = retroEventEntities.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        List<CreateRetroEventDto> retroEventDTOs = new ArrayList<>();
+        for (RetroEventEntity retroEventEntity : retroEventEntities) {
+            CreateRetroEventDto retroEventDTO = new CreateRetroEventDto();
+            retroEventDTO.setEventId(retroEventEntity.getEventId());
+            retroEventDTO.setTitle(retroEventEntity.getTitle());
+            retroEventDTO.setSchedulingDate(retroEventEntity.getSchedulingDate().toString());
+            retroEventDTOs.add(retroEventDTO);
+
+        }
 
         return retroEventDTOs;
     }
 
     // Método auxiliar para converter uma entidade para um DTO
     private CreateRetroEventDto convertToDTO(RetroEventEntity retroEventEntity) {
+
         CreateRetroEventDto retroEventDTO = new CreateRetroEventDto();
         retroEventDTO.setTitle(retroEventEntity.getTitle());
-        retroEventDTO.setSchedulingDate(retroEventEntity.getSchedulingDate());
+        retroEventDTO.setSchedulingDate(retroEventEntity.getSchedulingDate().toString());
 
         return retroEventDTO;
     }

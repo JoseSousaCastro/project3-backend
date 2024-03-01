@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "retro_event")
@@ -32,10 +33,10 @@ public class RetroEventEntity implements Serializable {
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private ArrayList<UserEntity> members;
+    private List<UserEntity> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private ArrayList<RetroCommentEntity> comments;
+    private List<RetroCommentEntity> comments = new ArrayList<>();
 
     public RetroEventEntity() {
     }
@@ -64,16 +65,24 @@ public class RetroEventEntity implements Serializable {
         this.schedulingDate = schedulingDate;
     }
 
-    public ArrayList<UserEntity> getMembers() {
+    public List<UserEntity> getMembers() {
         return members;
+    }
+
+    public void setMembers(List<UserEntity> members) {
+        this.members = members;
     }
 
     public void addMember(UserEntity member) {
         members.add(member);
     }
 
-    public ArrayList<RetroCommentEntity> getComments() {
+    public List<RetroCommentEntity> getComments() {
         return comments;
+    }
+
+    public void setComments(List<RetroCommentEntity> comments) {
+        this.comments = comments;
     }
 
     public void addComment(RetroCommentEntity comment) {

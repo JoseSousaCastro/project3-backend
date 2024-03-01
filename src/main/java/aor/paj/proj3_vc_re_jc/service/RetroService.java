@@ -137,7 +137,7 @@ public class RetroService {
 
     @POST
     @Path("/add")
-    @Consumes(MediaType.APPLICATION_JSON)
+    //@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addRetrospective(@HeaderParam("token") String token, CreateRetroEventDto createRetroEventDTO) {
         Response response;
@@ -145,6 +145,9 @@ public class RetroService {
             response = Response.status(401).entity("Invalid credentials").build();
         } else {
             boolean added = retroBean.addRetrospective(token, createRetroEventDTO);
+            System.out.println("Added: " + added);
+            System.out.println(createRetroEventDTO.getSchedulingDate());
+
             if (!added) {
                 response = Response.status(400).entity("Retrospective not created. Verify all fields").build();
             } else {

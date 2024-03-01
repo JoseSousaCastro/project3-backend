@@ -6,6 +6,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @XmlRootElement
 public class RetroEventDto {
@@ -19,9 +20,9 @@ public class RetroEventDto {
     @XmlElement
     private LocalDate date;
     @XmlElement
-    private ArrayList<String> retroMembers = new ArrayList<>();
+    private List<String> retroMembers = new ArrayList<>();
     @XmlElement
-    private ArrayList<RetroCommentDto> retroComments = new ArrayList<>();
+    private List<RetroCommentDto> retroComments = new ArrayList<>();
 
 
     public RetroEventDto() {
@@ -55,7 +56,7 @@ public class RetroEventDto {
         retroMembers.add(username);
     }
 
-    public ArrayList<String> getRetroMembers() {
+    public List<String> getRetroMembers() {
         return retroMembers;
     }
 
@@ -63,7 +64,7 @@ public class RetroEventDto {
         retroComments.add(retroComment);
     }
 
-    public ArrayList<RetroCommentDto> getRetroComments() {
+    public List<RetroCommentDto> getRetroComments() {
         return retroComments;
     }
 
