@@ -68,8 +68,8 @@ public class RetroCommentEntity implements Serializable {
         this.comment = comment;
     }
 
-    public RetroCommentCategory getCategory() {
-        return category;
+    public String getCategory() {
+        return String.valueOf(category);
     }
 
     public void setCategory(RetroCommentCategory category) {

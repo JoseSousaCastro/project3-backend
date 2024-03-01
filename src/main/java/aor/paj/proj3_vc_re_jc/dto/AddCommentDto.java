@@ -17,6 +17,9 @@ public class AddCommentDto {
     @XmlElement
     private String category;
 
+    public AddCommentDto() {
+    }
+
     public int getUserId() {
         return userId;
     }
