@@ -134,7 +134,7 @@ public class TaskBean implements Serializable {
     }
 
     public Response getAllTasks() {
-        ArrayList<TaskEntity> tasks = taskDao.findAllTasks();
+        ArrayList<TaskEntity> tasks = taskDao.findAllActiveTasks();
         if (tasks != null && !tasks.isEmpty()) {
             ArrayList<TaskDto> taskDtos = convertTasksFromEntityListToDtoList(tasks);
             return Response.status(200).entity(taskDtos).build(); // Successful response with tasks

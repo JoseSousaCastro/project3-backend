@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "task")
-@NamedQuery(name = "Task.findAllTasks", query = "SELECT t FROM TaskEntity t")
+@NamedQuery(name = "Task.findAllActiveTasks", query = "SELECT t FROM TaskEntity t WHERE t.deleted = :deleted")
 @NamedQuery(name = "Task.findTaskById", query = "SELECT t FROM TaskEntity t WHERE t.id = :id")
 @NamedQuery(name = "Task.findTaskByIdAndUser", query = "SELECT t FROM TaskEntity t WHERE t.id = :id AND t.creator = :creator")
 @NamedQuery(name = "Task.findTasksByUser", query = "SELECT t FROM TaskEntity t WHERE t.creator = :creator")
