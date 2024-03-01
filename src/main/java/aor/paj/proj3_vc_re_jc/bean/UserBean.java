@@ -132,6 +132,7 @@ public class UserBean implements Serializable {
             u.setLastName(user.getLastName());
             u.setFirstName(user.getFirstName());
             u.setEmail(user.getEmail());
+            u.setPassword(user.getPassword());
             t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));
             userDao.persist(u);
         }
@@ -270,6 +271,17 @@ public class UserBean implements Serializable {
             u.setRole(dto.getRole());
             t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));
         }
+    }
 
+    public UserDto userByToken(String token) {
+        TokenEntity t = tokenDao.findTokenById(token);
+        UserEntity u = userDao.findUserByToken(token);
+        if (u!=null) {
+            t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));
+            UserDto dto = convertUserEntitytoUserDto(u);
+            return dto;
+        } else {
+            return null;
+        }
     }
 }
