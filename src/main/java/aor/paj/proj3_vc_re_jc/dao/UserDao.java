@@ -1,9 +1,11 @@
 package aor.paj.proj3_vc_re_jc.dao;
 
+import aor.paj.proj3_vc_re_jc.entity.TaskEntity;
 import aor.paj.proj3_vc_re_jc.entity.UserEntity;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,11 +38,12 @@ public class UserDao extends AbstractDao<UserEntity> {
         }
     }
 
-    public List<UserEntity> allUsers() {
+    public ArrayList<UserEntity> allUsers() {
         try {
-            return em.createNamedQuery("User.findAllUsers", UserEntity.class).getResultList();
-        } catch (NoResultException e) {
-            return Collections.emptyList();
+            ArrayList<UserEntity> userEntityEntities = (ArrayList<UserEntity>) em.createNamedQuery("User.findAllUsers").getResultList();
+            return userEntityEntities;
+        } catch (Exception e) {
+            return null;
         }
     }
 

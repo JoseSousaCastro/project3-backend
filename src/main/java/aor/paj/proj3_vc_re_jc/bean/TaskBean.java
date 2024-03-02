@@ -143,14 +143,15 @@ public class TaskBean implements Serializable {
         }
     }
 
-    public Response getUserTasks(String token){
+    public Response getUserTasks(String token, String username){
         // Get user role by token
         UserEntity user = userDao.findUserByToken(token);
         UserRole userRole = user.getRole();
         // Check if the user is a SCRUM_MASTER or PRODUCT_OWNER
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
-            if (user != null) {
-                ArrayList<TaskEntity> tasks = taskDao.findTasksByUser(user);
+            UserEntity userTask = userDao.findUserByUsername(username);
+            if (userTask != null) {
+                ArrayList<TaskEntity> tasks = taskDao.findTasksByUser(userTask);
                 if (tasks != null && !tasks.isEmpty()) {
                     ArrayList<TaskDto> taskDtos = convertTasksFromEntityListToDtoList(tasks);
                     return Response.status(200).entity(taskDtos).build(); // Successful response with tasks
@@ -183,13 +184,13 @@ public class TaskBean implements Serializable {
         }
     }
 
-    public Response getCategoryTasks(String token, CategoryDto category) {
+    public Response getCategoryTasks(String token, int categoryId) {
         // Get user role by token
         UserEntity user = userDao.findUserByToken(token);
         UserRole userRole = user.getRole();
         // Check if the user is a SCRUM_MASTER or PRODUCT_OWNER
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
-            CategoryEntity ctgEntity = categoryDao.findCategoryById(category.getId());
+            CategoryEntity ctgEntity = categoryDao.findCategoryById(categoryId);
             if (ctgEntity != null) {
                 ArrayList<TaskEntity> tasks = taskDao.getTasksByCategoryId(ctgEntity.getId());
                 if (tasks != null && !tasks.isEmpty()) {

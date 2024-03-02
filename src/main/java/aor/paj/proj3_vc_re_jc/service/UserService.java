@@ -18,8 +18,6 @@ public class UserService {
 
     @Inject
     UserBean userBean;
-    @Inject
-    TaskBean taskBean;
 
     @POST
     @Path("/login")
@@ -52,6 +50,18 @@ public class UserService {
         } else {
             return Response.status(401).entity("Invalid Token!").build();
         }
+    }
+
+    @GET
+    @Path("/username")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUsernameList(@HeaderParam("token") String token) {
+        if (!userBean.tokenExist(token)) {
+            userBean.logout(token);
+            return Response.status(401).entity("Invalid token").build();
+        }
+        return userBean.getAllUsers();
     }
 
     @PUT

@@ -71,7 +71,7 @@ public class TaskDao extends AbstractDao<TaskEntity> {
 
     public ArrayList<TaskEntity> getTasksByCategoryId(int categoryId) {
         try {
-            String jpql = "SELECT t FROM TaskEntity t WHERE t.category.id = :categoryId";
+            String jpql = "SELECT t FROM TaskEntity t WHERE t.category.id = :categoryId AND t.deleted = false";
             TypedQuery<TaskEntity> query = em.createQuery(jpql, TaskEntity.class);
             query.setParameter("categoryId", categoryId);
             return new ArrayList<>(query.getResultList());
