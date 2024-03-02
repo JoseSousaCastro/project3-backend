@@ -98,18 +98,22 @@ public class CategoryBean implements Serializable {
     }
 
     public Response updateCategoryName(String token, CategoryDto ctg) {
+
         // Get user role by token
         UserEntity user = userDao.findUserByToken(token);
         UserRole userRole = user.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
             CategoryEntity c = categoryDao.findCategoryById(ctg.getId());
-            if (c != null) {
-                c.setCategoryName(ctg.getName());
-                return Response.status(200).entity("Category name updated successfully").build();
-            } else {
+            if (c == null) {
                 return Response.status(404).entity("Category not found").build();
             }
+            CategoryEntity c1 = categoryDao.findCategoryByName(ctg.getName());
+            if (c1 != null) {
+                return Response.status(404).entity("Category name already exists").build();
+            }
+            c.setCategoryName(ctg.getName());
+            return Response.status(200).entity("Category name updated successfully").build();
         } else {
             return Response.status(403).entity("Invalid role permissions").build();
         }
