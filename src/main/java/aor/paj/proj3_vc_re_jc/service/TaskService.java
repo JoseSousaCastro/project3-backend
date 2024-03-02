@@ -15,6 +15,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 @Path("/tasks")
@@ -121,8 +123,15 @@ public class TaskService {
         if (task.getStartDate() == null || task.getEndDate() == null) {
             return Response.status(400).entity("Both start date and end date must be provided").build();
         }
-        if (task.getEndDate().isBefore(task.getStartDate())) {
-            return Response.status(400).entity("End date must be after start date").build();
+        try {
+            LocalDate startDate = LocalDate.parse(task.getStartDate());
+            LocalDate endDate = LocalDate.parse(task.getEndDate());
+
+            if (!endDate.isAfter(startDate)) {
+                return Response.status(400).entity("End date must be after start date").build();
+            }
+        } catch (DateTimeParseException e) {
+            return Response.status(400).entity("Invalid date format").build();
         }
         // Check if category exists
         CategoryEntity category = categoryDao.findCategoryByName(task.getCategory());
@@ -161,8 +170,15 @@ public class TaskService {
         if (task.getStartDate() == null || task.getEndDate() == null) {
             return Response.status(400).entity("Both start date and end date must be provided").build();
         }
-        if (task.getEndDate().isBefore(task.getStartDate())) {
-            return Response.status(400).entity("End date must be after start date").build();
+        try {
+            LocalDate startDate = LocalDate.parse(task.getStartDate());
+            LocalDate endDate = LocalDate.parse(task.getEndDate());
+
+            if (!endDate.isAfter(startDate)) {
+                return Response.status(400).entity("End date must be after start date").build();
+            }
+        } catch (DateTimeParseException e) {
+            return Response.status(400).entity("Invalid date format").build();
         }
         // Check if category exists
         CategoryEntity category = categoryDao.findCategoryByName(task.getCategory());

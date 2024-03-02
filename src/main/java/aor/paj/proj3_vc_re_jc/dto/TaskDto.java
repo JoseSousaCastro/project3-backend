@@ -5,7 +5,6 @@ import aor.paj.proj3_vc_re_jc.enums.TaskState;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
-import java.time.LocalDate;
 
 @XmlRootElement
 public class TaskDto {
@@ -23,9 +22,9 @@ public class TaskDto {
     @XmlElement
     private TaskPriority priority;
     @XmlElement
-    private LocalDate startDate;
+    private String startDate;
     @XmlElement
-    private LocalDate endDate;
+    private String endDate;
     @XmlElement
     private boolean deleted;
     @XmlElement
@@ -74,19 +73,19 @@ public class TaskDto {
         this.priority = priority;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
