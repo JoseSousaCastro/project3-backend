@@ -3,11 +3,13 @@ package aor.paj.proj3_vc_re_jc.bean;
 import aor.paj.proj3_vc_re_jc.dao.TokenDao;
 import aor.paj.proj3_vc_re_jc.dao.UserDao;
 import aor.paj.proj3_vc_re_jc.dto.*;
+import aor.paj.proj3_vc_re_jc.entity.TaskEntity;
 import aor.paj.proj3_vc_re_jc.entity.TokenEntity;
 import aor.paj.proj3_vc_re_jc.entity.UserEntity;
 import aor.paj.proj3_vc_re_jc.enums.UserRole;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
+import jakarta.ws.rs.core.Response;
 import org.hibernate.annotations.Check;
 import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 
@@ -158,6 +160,15 @@ public class UserBean implements Serializable {
         else return null;
     }
 
+    public Response getAllUsers() {
+        ArrayList<UserEntity> users = userDao.allUsers();
+        if (users != null && !users.isEmpty()) {
+            ArrayList<UserDto> userDtos = convertUsersFromEntityListToDtoList(users);
+            return Response.status(200).entity(userDtos).build(); // Successful response
+        } else {
+            return Response.status(404).entity("No users found").build();
+        }
+    }
 
 
     private boolean isTokenValid(TokenEntity t) {
@@ -209,7 +220,7 @@ public class UserBean implements Serializable {
 
     public ArrayList<CheckProfileDto> checkAll(String token) {
         TokenEntity t = tokenDao.findTokenById(token);
-        List<UserEntity> userList = userDao.allUsers();
+        ArrayList<UserEntity> userList = userDao.allUsers();
 
         ArrayList<CheckProfileDto> dtos = new ArrayList<>();
 
@@ -237,7 +248,6 @@ public class UserBean implements Serializable {
             u.setDeleted(true);
             t.setTokenExpiration(Instant.now().plus(tokenTimer, ChronoUnit.SECONDS));
             userDao.persist(u);
-
         }
     }
 
@@ -283,5 +293,20 @@ public class UserBean implements Serializable {
         } else {
             return null;
         }
+    }
+
+    private ArrayList<UserDto> convertUsersFromEntityListToDtoList(ArrayList<UserEntity> userEntityEntities) {
+        ArrayList<UserDto> userDtos = new ArrayList<>();
+        for (UserEntity u : userEntityEntities) {
+            userDtos.add(convertShortUserEntitytoLoginDto(u));
+        }
+        return userDtos;
+    }
+
+    private UserDto convertShortUserEntitytoLoginDto(UserEntity user) {
+        UserDto shortDto = new UserDto();
+        shortDto.setUsername(user.getUsername());
+        shortDto.setPassword(user.getPassword());
+        return shortDto;
     }
 }

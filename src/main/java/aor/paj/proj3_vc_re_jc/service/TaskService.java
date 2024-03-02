@@ -64,11 +64,11 @@ public class TaskService {
     @GET
     @Path("/userTasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllUserTasks(@HeaderParam("token") String token) {
+    public Response getAllUserTasks(@HeaderParam("token") String token, @HeaderParam("username") String username) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return taskBean.getUserTasks(token);
+        return taskBean.getUserTasks(token, username);
     }
 
     // Return all deleted Tasks
@@ -86,11 +86,11 @@ public class TaskService {
     @GET
     @Path("/categoryTasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllCategoryTasks(@HeaderParam("token") String token, CategoryDto category) {
+    public Response getAllCategoryTasks(@HeaderParam("token") String token, @HeaderParam("id") int categoryId) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return taskBean.getCategoryTasks(token, category);
+        return taskBean.getCategoryTasks(token, categoryId);
     }
 
     // Add Task
