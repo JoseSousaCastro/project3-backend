@@ -82,6 +82,7 @@ public class RetroBean implements Serializable {
         addCommentDTO.setComment(retroCommentEntity.getComment());
         addCommentDTO.setUserId(retroCommentEntity.getUser().getId());
         addCommentDTO.setEventId(retroCommentEntity.getEvent().getEventId());
+        addCommentDTO.setCategory(retroCommentEntity.getCategory());
         return addCommentDTO;
     }
 
