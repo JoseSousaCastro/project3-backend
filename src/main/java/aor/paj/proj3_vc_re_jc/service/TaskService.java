@@ -86,11 +86,11 @@ public class TaskService {
     @GET
     @Path("/categoryTasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllCategoryTasks(@HeaderParam("token") String token, @HeaderParam("id") int categoryId) {
+    public Response getAllCategoryTasks(@HeaderParam("token") String token, @HeaderParam("categoryName") String categoryName) {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
-        return taskBean.getCategoryTasks(token, categoryId);
+        return taskBean.getCategoryTasks(token, categoryName);
     }
 
     // Add Task

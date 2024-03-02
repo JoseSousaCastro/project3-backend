@@ -184,13 +184,13 @@ public class TaskBean implements Serializable {
         }
     }
 
-    public Response getCategoryTasks(String token, int categoryId) {
+    public Response getCategoryTasks(String token, String categoryName) {
         // Get user role by token
         UserEntity user = userDao.findUserByToken(token);
         UserRole userRole = user.getRole();
         // Check if the user is a SCRUM_MASTER or PRODUCT_OWNER
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
-            CategoryEntity ctgEntity = categoryDao.findCategoryById(categoryId);
+            CategoryEntity ctgEntity = categoryDao.findCategoryByName(categoryName);
             if (ctgEntity != null) {
                 ArrayList<TaskEntity> tasks = taskDao.findTasksByCategoryId(ctgEntity.getId());
                 if (tasks != null && !tasks.isEmpty()) {
