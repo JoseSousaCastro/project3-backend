@@ -82,7 +82,7 @@ public class CategoryBean implements Serializable {
         if (userRole == UserRole.PRODUCT_OWNER) {
             CategoryEntity c = categoryDao.findCategoryById(category.getId());
             if (c != null) {
-                ArrayList<TaskEntity> tasks = taskDao.getTasksByCategoryId(category.getId());
+                ArrayList<TaskEntity> tasks = taskDao.findTasksByCategoryId(category.getId());
                 if (tasks == null || tasks.isEmpty()) {
                     categoryDao.remove(c);
                     return Response.status(200).entity("Category removed successfully").build();

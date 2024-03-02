@@ -192,7 +192,7 @@ public class TaskBean implements Serializable {
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
             CategoryEntity ctgEntity = categoryDao.findCategoryById(categoryId);
             if (ctgEntity != null) {
-                ArrayList<TaskEntity> tasks = taskDao.getTasksByCategoryId(ctgEntity.getId());
+                ArrayList<TaskEntity> tasks = taskDao.findTasksByCategoryId(ctgEntity.getId());
                 if (tasks != null && !tasks.isEmpty()) {
                     ArrayList<TaskDto> taskDtos = convertTasksFromEntityListToDtoList(tasks);
                     return Response.status(200).entity(taskDtos).build(); // Successful response with tasks

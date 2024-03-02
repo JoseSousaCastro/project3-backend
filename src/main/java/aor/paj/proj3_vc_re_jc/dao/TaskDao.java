@@ -53,7 +53,7 @@ public class TaskDao extends AbstractDao<TaskEntity> {
 
     public ArrayList<TaskEntity> findTasksByUser(UserEntity userEntity) {
         try {
-            ArrayList<TaskEntity> taskEntityEntities = (ArrayList<TaskEntity>) em.createNamedQuery("Task.findTasksByUser").setParameter("creator", userEntity).getResultList();
+            ArrayList<TaskEntity> taskEntityEntities = (ArrayList<TaskEntity>) em.createNamedQuery("Task.findTasksByUser").setParameter("creator", userEntity).setParameter("deleted", false).getResultList();
             return taskEntityEntities;
         } catch (Exception e) {
             return null;
@@ -69,7 +69,7 @@ public class TaskDao extends AbstractDao<TaskEntity> {
         }
     }
 
-    public ArrayList<TaskEntity> getTasksByCategoryId(int categoryId) {
+    public ArrayList<TaskEntity> findTasksByCategoryId(int categoryId) {
         try {
             String jpql = "SELECT t FROM TaskEntity t WHERE t.category.id = :categoryId AND t.deleted = false";
             TypedQuery<TaskEntity> query = em.createQuery(jpql, TaskEntity.class);
