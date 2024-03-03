@@ -41,7 +41,10 @@ public class TaskService {
         if (!userBean.tokenExist(token)) {
             return Response.status(401).entity("Invalid token").build();
         }
+       else {
+
         return taskBean.getAllTasks();
+    }
     }
 
     // Return Task by Id
