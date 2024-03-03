@@ -15,6 +15,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 @Stateless
 public class TaskBean implements Serializable {
@@ -158,6 +159,7 @@ public class TaskBean implements Serializable {
         ArrayList<TaskEntity> tasks = taskDao.findAllActiveTasks();
         if (tasks != null && !tasks.isEmpty()) {
             ArrayList<TaskDto> taskDtos = convertTasksFromEntityListToDtoList(tasks);
+            taskDtos.sort(Comparator.comparing(TaskDto::getPriority, Comparator.reverseOrder()).thenComparing(Comparator.comparing(TaskDto::getStartDate).thenComparing(TaskDto::getEndDate)));
             return Response.status(200).entity(taskDtos).build(); // Successful response with tasks
         } else {
             return Response.status(404).entity("No tasks found").build(); // No tasks found
