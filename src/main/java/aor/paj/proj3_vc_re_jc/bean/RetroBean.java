@@ -4,13 +4,12 @@ import aor.paj.proj3_vc_re_jc.dao.RetroEventDao;
 import aor.paj.proj3_vc_re_jc.dao.UserDao;
 import aor.paj.proj3_vc_re_jc.dto.AddCommentDto;
 import aor.paj.proj3_vc_re_jc.dto.CreateRetroEventDto;
+import aor.paj.proj3_vc_re_jc.dto.RetroCommentDto;
 import aor.paj.proj3_vc_re_jc.entity.RetroCommentEntity;
 import aor.paj.proj3_vc_re_jc.entity.RetroEventEntity;
 import aor.paj.proj3_vc_re_jc.entity.UserEntity;
 import aor.paj.proj3_vc_re_jc.enums.RetroCommentCategory;
-import jakarta.ejb.EJB;
-import jakarta.ejb.Local;
-import jakarta.ejb.Stateless;
+import jakarta.ejb.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -205,6 +204,7 @@ public class RetroBean implements Serializable {
         return edited;
     }
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean deleteComment(int id, int id2) {
         RetroEventEntity retroEventEntity = retroEventDao.find(id);
         boolean deleted = true;
@@ -213,6 +213,8 @@ public class RetroBean implements Serializable {
             if (retroCommentEntity != null) {
                 retroEventEntity.removeComment(retroCommentEntity);
                 retroEventDao.merge(retroEventEntity);
+                retroEventDao.flush();
+                System.out.println("DELETED");
             } else {
                 deleted = false;
             }
@@ -233,4 +235,18 @@ public class RetroBean implements Serializable {
         }
         return deleted;
     }
+
+    public  List<RetroCommentDto> getCommentss (int id) {
+        RetroEventEntity entity = retroEventDao.find(id);
+        List<RetroCommentDto> dtos = new ArrayList<>();
+        for (RetroCommentEntity en : entity.getComments()) {
+            RetroCommentDto  dto = new RetroCommentDto();
+            dto.setComment(en.getComment());
+            dto.setCommentId(en.getCommentId());
+
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
 }

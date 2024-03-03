@@ -4,6 +4,7 @@ import aor.paj.proj3_vc_re_jc.bean.RetroBean;
 import aor.paj.proj3_vc_re_jc.bean.UserBean;
 import aor.paj.proj3_vc_re_jc.dto.AddCommentDto;
 import aor.paj.proj3_vc_re_jc.dto.CreateRetroEventDto;
+import aor.paj.proj3_vc_re_jc.dto.RetroCommentDto;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.ws.rs.*;
@@ -109,6 +110,21 @@ public class RetroService {
                     response = Response.status(200).entity(retroComment).build();
                 }
             }
+        }
+        return response;
+    }
+
+    @GET
+    @Path("/commentById")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCommentById (@HeaderParam("token") String token, @HeaderParam("id") int id) {
+        Response response;
+        if (!userBean.tokenExist(token)) {
+            response = Response.status(401).entity("Invalid credentials").build();
+        } else {
+            List<RetroCommentDto> dtos = retroBean.getCommentss(id);
+            response = Response.status(200).entity(dtos).build();
         }
         return response;
     }

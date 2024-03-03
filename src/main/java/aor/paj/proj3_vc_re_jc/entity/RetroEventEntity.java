@@ -100,5 +100,6 @@ public class RetroEventEntity implements Serializable {
 
     public void removeComment(RetroCommentEntity retroCommentEntity) {
         comments.remove(retroCommentEntity);
+        retroCommentEntity.setRetroEventEntity(null);
     }
 }
