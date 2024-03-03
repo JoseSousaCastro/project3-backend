@@ -89,6 +89,7 @@ public class UserBean implements Serializable {
         userDto.setToken(user.getTokenId());
         userDto.setDeleted(user.isDeleted());
         userDto.setRole(user.getRole());
+        userDto.setId(user.getId());
         return userDto;
     }
 
