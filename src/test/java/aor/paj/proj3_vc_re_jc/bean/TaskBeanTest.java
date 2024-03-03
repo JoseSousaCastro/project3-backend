@@ -3,9 +3,8 @@ package aor.paj.proj3_vc_re_jc.bean;
 import aor.paj.proj3_vc_re_jc.dao.CategoryDao;
 import aor.paj.proj3_vc_re_jc.dao.UserDao;
 import aor.paj.proj3_vc_re_jc.entity.CategoryEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
+import aor.paj.proj3_vc_re_jc.enums.TaskPriority;
+import jakarta.persistence.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import aor.paj.proj3_vc_re_jc.dao.TaskDao;
@@ -29,9 +28,9 @@ class TaskBeanTest {
     TaskDao taskDao;
     UserDao userDao;
     CategoryDao categoryDao;
-    Set<TaskEntity> tasksSet;
+    Set<TaskEntity> userTasksSet;
+    Set<TaskEntity> categoryTasksSet;
     ArrayList<TaskEntity> tasksList;
-    /*
 
     @BeforeEach
     void setup() {
@@ -48,7 +47,7 @@ class TaskBeanTest {
         taskBean.setUserDao(userDao);
         taskBean.setCategoryDao(categoryDao);
 
-        //Preparation: create one user, one task category, one task and a list of tasks
+        //Preparation: create one user
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername("userTest");
         userEntity.setPassword("password");
@@ -60,35 +59,49 @@ class TaskBeanTest {
         userEntity.setPhotoURL("https://example.com/profile_photos/random_user123.jpg");
         userEntity.setDeleted(false);
         userEntity.setRole(UserRole.PRODUCT_OWNER);
-        userEntity.setTasks(tasksSet);
+        userEntity.setTasks(userTasksSet);
 
+        // Create one task category
+        CategoryEntity ctgEntity = new CategoryEntity();
+        ctgEntity.setId(1);
+        ctgEntity.setCategoryName("Frontend");
+        ctgEntity.setTasks(categoryTasksSet);
 
-        CategoryEntity ctg = new CategoryEntity();
-        a.setId(1);
-        a.setTitle("Activity1");
-        a.setDescription("This is the first activity");
-        a.setOwner(userEntity);
+        // Create one task
+        TaskEntity tEntity = new TaskEntity();
+        tEntity.setId(1);
+        tEntity.setTitle("Tarefa_teste1");
+        tEntity.setDescription("Esta tarefa serve para testes");
+        tEntity.setStartDate("2024-06-12");
+        tEntity.setEndDate("2024-06-18");
+        tEntity.setPriority(TaskPriority.LOW_PRIORITY);
+        tEntity.setCreator(userEntity);
+        tEntity.setCategory(ctgEntity);
 
-        activitiesSet = new HashSet<ActivityEntity>();
-        activitiesList = new ArrayList<ActivityEntity>();
-        activitiesSet.add(a);
-        activitiesList.add(a);
+        // Create a list of tasks
+        userTasksSet = new HashSet<TaskEntity>();
+        categoryTasksSet = new HashSet<TaskEntity>();
+        tasksList = new ArrayList<TaskEntity>();
+        userTasksSet.add(tEntity);
+        categoryTasksSet.add(tEntity);
+        tasksList.add(tEntity);
 
-        userEntity.setActivities(activitiesSet);
+        userEntity.setTasks(userTasksSet);
+        ctgEntity.setTasks(categoryTasksSet);
+
 
         // define behaviour of activityDao
-        when(activityDao.find(0)).thenReturn(null);
-        when(activityDao.findActivityByUser(userEntity)).thenReturn(activitiesList);
-        when(activityDao.findActivityById(1)).thenReturn(a);
-        when(activityDao.findActivityById(0)).thenReturn(null);
-        when(userDao.findUserByToken("token1")).thenReturn(userEntity);
-        when(userDao.findUserByToken("token2")).thenReturn(null);
-        doNothing().when(activityDao).persist(isA(ActivityEntity.class));
+        when(taskDao.find(0)).thenReturn(null);
+        when(taskDao.findTasksByUser(userEntity)).thenReturn(tasksList);
+        when(taskDao.findTaskById(1)).thenReturn(tEntity);
+        when(taskDao.findTaskById(0)).thenReturn(null);
+        when(userDao.findUserByToken("token_id")).thenReturn(userEntity);
+        when(userDao.findUserByToken("token123")).thenReturn(null);
+        doNothing().when(taskDao).persist(isA(TaskEntity.class));
     }
 
     @Test
     void test() {
-        //fail("this is just a test for showing how a test may fail :)");
         assertTrue(true);
     }
 
@@ -146,7 +159,5 @@ class TaskBeanTest {
         // verifies whether findActivityById(1) is called
         verify(activityDao, times(3)).findActivityByUser(isA(UserEntity.class));
     }
-
- */
 
 }
