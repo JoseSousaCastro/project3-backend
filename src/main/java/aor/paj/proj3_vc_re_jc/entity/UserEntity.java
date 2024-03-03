@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Set;
-
-import aor.paj.proj3_vc_re_jc.enums.TaskPriority;
 import aor.paj.proj3_vc_re_jc.enums.UserRole;
 import jakarta.persistence.*;
 
@@ -71,10 +69,6 @@ public class UserEntity implements Serializable{
         this.email = email;
     }
 
-    public int getRoleInt () {
-        return role;
-    }
-
     public UserRole getRole() {
         return UserRole.valueOf(this.role);
     }
@@ -106,6 +100,7 @@ public class UserEntity implements Serializable{
     public void setUsername(String username) {
         this.username = username;
     }
+
 
     public String getFirstName() {
         return firstName;

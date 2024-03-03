@@ -3,9 +3,6 @@ package aor.paj.proj3_vc_re_jc.bean;
 import aor.paj.proj3_vc_re_jc.dao.CategoryDao;
 import aor.paj.proj3_vc_re_jc.dao.TaskDao;
 import aor.paj.proj3_vc_re_jc.dao.UserDao;
-import aor.paj.proj3_vc_re_jc.dto.CategoryDto;
-import aor.paj.proj3_vc_re_jc.dto.LoginDto;
-import aor.paj.proj3_vc_re_jc.dto.RoleDto;
 import aor.paj.proj3_vc_re_jc.dto.TaskDto;
 import aor.paj.proj3_vc_re_jc.entity.CategoryEntity;
 import aor.paj.proj3_vc_re_jc.entity.TaskEntity;
@@ -274,4 +271,18 @@ public class TaskBean implements Serializable {
         }
         return taskDtos;
     }
+
+    public void setTaskDao(TaskDao taskDao) {
+        this.taskDao = taskDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setCategoryDao(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
+    }
+
+
 }
