@@ -75,4 +75,7 @@ public class RetroCommentEntity implements Serializable {
     public void setCategory(RetroCommentCategory category) {
         this.category = category;
     }
+
+    public void setRetroEventEntity(Object o) {
+    }
 }
