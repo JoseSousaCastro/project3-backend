@@ -1,7 +1,6 @@
 package aor.paj.proj3_vc_re_jc.bean;
 
-import aor.paj.proj3_vc_re_jc.dao.RetroEventDao;
-import aor.paj.proj3_vc_re_jc.dao.UserDao;
+import aor.paj.proj3_vc_re_jc.dao.*;
 import aor.paj.proj3_vc_re_jc.dto.AddCommentDto;
 import aor.paj.proj3_vc_re_jc.dto.CreateRetroEventDto;
 import aor.paj.proj3_vc_re_jc.dto.RetroCommentDto;
@@ -24,11 +23,25 @@ public class RetroBean implements Serializable {
 
     @EJB
     RetroEventDao retroEventDao;
+
+    @EJB
+    RetroCommentDao retroCommentDao;
     @EJB
     UserDao userDao;
 
     public RetroBean() {
     }
+
+    public void setRetroEventDao(RetroEventDao retroEventDao) {
+        this.retroEventDao = retroEventDao;
+    }
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+    public void setRetroCommentDao(RetroCommentDao retroCommentDao) {
+        this.retroCommentDao = retroCommentDao;
+    }
+
 
     public boolean addRetrospective(String token, CreateRetroEventDto createRetroEventDTO) {
         UserEntity userEntity = userDao.findUserByToken(token);
