@@ -31,6 +31,18 @@ public class TaskBean implements Serializable {
     public TaskBean() {
     }
 
+    public void setTaskDao(TaskDao taskDao) {
+        this.taskDao = taskDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setCategoryDao(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
+    }
+
     public boolean addTask(String token, TaskDto t) {
         UserEntity userEntity = userDao.findUserByToken(token);
         if (userEntity != null) {
@@ -271,18 +283,4 @@ public class TaskBean implements Serializable {
         }
         return taskDtos;
     }
-
-    public void setTaskDao(TaskDao taskDao) {
-        this.taskDao = taskDao;
-    }
-
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
-    public void setCategoryDao(CategoryDao categoryDao) {
-        this.categoryDao = categoryDao;
-    }
-
-
 }
