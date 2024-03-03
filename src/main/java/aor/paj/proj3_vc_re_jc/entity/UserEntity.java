@@ -73,6 +73,10 @@ public class UserEntity implements Serializable{
         return UserRole.valueOf(this.role);
     }
 
+    public  int getRoleInt() {
+        return role;
+    }
+
     public void setRole(UserRole role) {
         this.role = role.getValue();
     }
