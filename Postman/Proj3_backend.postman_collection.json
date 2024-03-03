@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"Novo_user\",\r\n    \"password\": \"senha123\",\r\n    \"email\": \"teste@example.com\",\r\n    \"firstName\": \"Joao\",\r\n    \"lastName\": \"Soares\",\r\n    \"phone\": \"123456789\",\r\n    \"photoURL\": \"https://example.com/foto\",\r\n    \"role\": \"PRODUCT_OWNER\",\r\n    \"deleted\": false\r\n}\r\n",
+							"raw": "  {\r\n    \"username\": \"SUPER\",\r\n    \"password\": \"senha123\",\r\n    \"email\": \"super@example.com\",\r\n    \"firstName\": \"PrimeiroNome\",\r\n    \"lastName\": \"UltimoNome\",\r\n    \"phone\": \"123456789\",\r\n    \"photoURL\": \"https://example.com/foto\",\r\n    \"role\": \"PRODUCT_OWNER\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -25,17 +25,45 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/users/register",
+							"raw": "http://localhost:8080/project3-backend/rest/users/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"users",
 								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "EICAGjeALAoBmKKcQ1mugW1FOE2M0tJE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/users/username",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"users",
+								"username"
 							]
 						}
 					},
@@ -48,7 +76,7 @@
 						"header": [
 							{
 								"key": "username",
-								"value": "Novo_user",
+								"value": "SUPER",
 								"type": "text"
 							},
 							{
@@ -67,14 +95,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/users/login",
+							"raw": "http://localhost:8080/project3-backend/rest/users/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"users",
 								"login"
@@ -95,13 +123,13 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "RiwR7Y1BPvWw-eKA27wNFB3OcEfgNsL6",
+								"value": "QR2y4gRWrQtU3g8fNsHGebAIiVcYhwkA",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"title\": \"Nova_6\",\r\n  \"description\": \"Finish all tasks\",\r\n  \"priority\": \"MEDIUM_PRIORITY\",\r\n  \"startDate\": \"2024-06-12\",\r\n  \"endDate\": \"2024-12-01\",\r\n  \"category\": \"frontend\"\r\n}\r\n",
+							"raw": "{\r\n  \"title\": \"Nova_6\",\r\n  \"description\": \"Finish all tasks\",\r\n  \"priority\": \"MEDIUM_PRIORITY\",\r\n  \"startDate\": \"2024-06-12\",\r\n  \"endDate\": \"2024-12-01\",\r\n  \"category\": \"backend\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -109,17 +137,55 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/addTask",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/addTask",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
 								"addTask"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Task Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "QR2y4gRWrQtU3g8fNsHGebAIiVcYhwkA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n  \"name\": \"backend\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/category/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"tasks",
+								"category",
+								"add"
 							]
 						}
 					},
@@ -135,12 +201,12 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "RiwR7Y1BPvWw-eKA27wNFB3OcEfgNsL6",
+								"value": "EICAGjeALAoBmKKcQ1mugW1FOE2M0tJE",
 								"type": "text"
 							},
 							{
 								"key": "taskId",
-								"value": "1",
+								"value": "23",
 								"type": "text"
 							}
 						],
@@ -154,14 +220,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/task",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/task",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
 								"task"
@@ -180,7 +246,7 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "RiwR7Y1BPvWw-eKA27wNFB3OcEfgNsL6",
+								"value": "EICAGjeALAoBmKKcQ1mugW1FOE2M0tJE",
 								"type": "text"
 							}
 						],
@@ -194,14 +260,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/all",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/all",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
 								"all"
@@ -220,7 +286,7 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "Ip4BtU41CtqTzJMwf4l9pc03IC8Ntn7T",
+								"value": "QR2y4gRWrQtU3g8fNsHGebAIiVcYhwkA",
 								"type": "text"
 							}
 						],
@@ -234,14 +300,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/deletedTasks",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/deletedTasks",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
 								"deletedTasks"
@@ -260,13 +326,18 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "Ip4BtU41CtqTzJMwf4l9pc03IC8Ntn7T",
+								"value": "EICAGjeALAoBmKKcQ1mugW1FOE2M0tJE",
+								"type": "text"
+							},
+							{
+								"key": "username",
+								"value": "consulta",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"consulta\",\r\n  \"role\": \"SCRUM_MASTER\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -274,14 +345,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/userTasks",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/userTasks",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
 								"userTasks"
@@ -300,18 +371,18 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "Ip4BtU41CtqTzJMwf4l9pc03IC8Ntn7T",
+								"value": "EICAGjeALAoBmKKcQ1mugW1FOE2M0tJE",
 								"type": "text"
 							},
 							{
-								"key": "userRole",
-								"value": "\"SCRUM_MASTER\"",
+								"key": "categoryName",
+								"value": "categoria_nova",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 3\r\n}\r\n",
+							"raw": "\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -319,17 +390,58 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/categoryTasks",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/categoryTasks",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
 								"categoryTasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Categories",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "EICAGjeALAoBmKKcQ1mugW1FOE2M0tJE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/category/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"tasks",
+								"category",
+								"all"
 							]
 						}
 					},
@@ -342,23 +454,13 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "Ip4BtU41CtqTzJMwf4l9pc03IC8Ntn7T",
-								"type": "text"
-							},
-							{
-								"key": "userRole",
-								"value": "\"PRODUCT_OWNER\"",
-								"type": "text"
-							},
-							{
-								"key": "username",
-								"value": "Novo_user",
+								"value": "EICAGjeALAoBmKKcQ1mugW1FOE2M0tJE",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"title\": \"Nova_6\",\r\n  \"description\": \"Finish all tasks\",\r\n  \"startDate\": \"2024-06-12\",\r\n  \"endDate\": \"2024-12-01\",\r\n  \"priority\": \"MEDIUM_PRIORITY\",\r\n  \"deleted\": false,\r\n  \"category\": \"frontend\"\r\n}\r\n//TaskDto task, RoleDto user",
+							"raw": "{\r\n  \"id\":19,\r\n  \"title\": \"Nova_6\",\r\n  \"description\": \"Finish all tasks\",\r\n  \"startDate\": \"2024-06-12\",\r\n  \"endDate\": \"2024-12-01\",\r\n  \"priority\": \"LOW_PRIORITY\",\r\n  \"category\": \"badajoz\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -366,14 +468,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/update",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/update",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
 								"update"
@@ -389,7 +491,7 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "RiwR7Y1BPvWw-eKA27wNFB3OcEfgNsL6",
+								"value": "QR2y4gRWrQtU3g8fNsHGebAIiVcYhwkA",
 								"type": "text"
 							},
 							{
@@ -408,14 +510,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/status",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/status",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
 								"status"
@@ -436,18 +538,18 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "RiwR7Y1BPvWw-eKA27wNFB3OcEfgNsL6",
+								"value": "QR2y4gRWrQtU3g8fNsHGebAIiVcYhwkA",
 								"type": "text"
 							},
 							{
 								"key": "taskId",
-								"value": "1",
+								"value": "5",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"role\": \"PRODUCT_OWNER\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -455,14 +557,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/updateDeleted",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/updateDeleted",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
 								"updateDeleted"
@@ -478,13 +580,13 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "Ip4BtU41CtqTzJMwf4l9pc03IC8Ntn7T",
+								"value": "EICAGjeALAoBmKKcQ1mugW1FOE2M0tJE",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"consulta\",\r\n  \"role\": \"PRODUCT_OWNER\"\r\n}\r\n",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -492,16 +594,17 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/userTasks",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/updateDeleted/userTasks",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
+								"updateDeleted",
 								"userTasks"
 							]
 						}
@@ -515,18 +618,18 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "RiwR7Y1BPvWw-eKA27wNFB3OcEfgNsL6",
+								"value": "QR2y4gRWrQtU3g8fNsHGebAIiVcYhwkA",
 								"type": "text"
 							},
 							{
 								"key": "taskId",
-								"value": "1",
+								"value": "3",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": " {\r\n  \"role\": \"PRODUCT_OWNER\"\r\n  }",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -534,14 +637,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/restoreDeleted",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/restoreDeleted",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
 								"restoreDeleted"
@@ -557,18 +660,18 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "RiwR7Y1BPvWw-eKA27wNFB3OcEfgNsL6",
+								"value": "QR2y4gRWrQtU3g8fNsHGebAIiVcYhwkA",
 								"type": "text"
 							},
 							{
 								"key": "taskId",
-								"value": "1",
+								"value": "3",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n  \"role\": \"PRODUCT_OWNER\"\r\n  }",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -576,60 +679,17 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/remove",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/remove",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
 								"remove"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Task Category",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "token",
-								"value": "RiwR7Y1BPvWw-eKA27wNFB3OcEfgNsL6",
-								"type": "text"
-							},
-							{
-								"key": "name",
-								"value": "backend",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "  {\r\n  \"role\": \"PRODUCT_OWNER\"\r\n  }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/category/add",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"proj3_vc_re_jc",
-								"rest",
-								"tasks",
-								"category",
-								"add"
 							]
 						}
 					},
@@ -642,12 +702,7 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "RiwR7Y1BPvWw-eKA27wNFB3OcEfgNsL6",
-								"type": "text"
-							},
-							{
-								"key": "userRole",
-								"value": "\"PRODUCT_OWNER\"",
+								"value": "QR2y4gRWrQtU3g8fNsHGebAIiVcYhwkA",
 								"type": "text"
 							}
 						],
@@ -661,14 +716,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/category/remove",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/category/remove",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
 								"category",
@@ -685,18 +740,13 @@
 						"header": [
 							{
 								"key": "token",
-								"value": "RiwR7Y1BPvWw-eKA27wNFB3OcEfgNsL6",
-								"type": "text"
-							},
-							{
-								"key": "userRole",
-								"value": "\"PRODUCT_OWNER\"",
+								"value": "QR2y4gRWrQtU3g8fNsHGebAIiVcYhwkA",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 1\r\n}\r\n",
+							"raw": "{\r\n    \"name\": \"interface\",\r\n    \"id\": 2    \r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -704,17 +754,453 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/proj3_vc_re_jc/rest/tasks/update",
+							"raw": "http://localhost:8080/project3-backend/rest/tasks/category/update",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"proj3_vc_re_jc",
+								"project3-backend",
 								"rest",
 								"tasks",
+								"category",
 								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Retros",
+			"item": [
+				{
+					"name": "Get All Retros",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "YXtK_1lNaXnjPgok0mTTKtp89QXZtjHH",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/retrospective/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"retrospective",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Comments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "iosW7b_pPQeWT4eKXc7bdrBZydPYY7tL",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/retrospective/:id/allComments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"retrospective",
+								":id",
+								"allComments"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Retro Members",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "iosW7b_pPQeWT4eKXc7bdrBZydPYY7tL",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/retrospective/:id/allMembers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"retrospective",
+								":id",
+								"allMembers"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Retro",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "iosW7b_pPQeWT4eKXc7bdrBZydPYY7tL",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/retrospective/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"retrospective",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Comment",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "iosW7b_pPQeWT4eKXc7bdrBZydPYY7tL",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/retrospective/:id/comment/:id2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"retrospective",
+								":id",
+								"comment",
+								":id2"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								},
+								{
+									"key": "id2",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Retro Member",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "iosW7b_pPQeWT4eKXc7bdrBZydPYY7tL",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/retrospective/:id/member/:id2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"retrospective",
+								":id",
+								"member",
+								":id2"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								},
+								{
+									"key": "id2",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Retro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "iosW7b_pPQeWT4eKXc7bdrBZydPYY7tL",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/retrospective/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"retrospective",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Retro Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "iosW7b_pPQeWT4eKXc7bdrBZydPYY7tL",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/retrospective/:id/addComment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"retrospective",
+								":id",
+								"addComment"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Retro Member",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "iosW7b_pPQeWT4eKXc7bdrBZydPYY7tL",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/retrospective/:id/addMember/:id2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"retrospective",
+								":id",
+								"addMember",
+								":id2"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								},
+								{
+									"key": "id2",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Retro Comment",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "iosW7b_pPQeWT4eKXc7bdrBZydPYY7tL",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/retrospective/:id/editComment/:d2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"retrospective",
+								":id",
+								"editComment",
+								":d2"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								},
+								{
+									"key": "d2",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Retro Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "iosW7b_pPQeWT4eKXc7bdrBZydPYY7tL",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/retrospective/:id/deleteComment/:id2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"retrospective",
+								":id",
+								"deleteComment",
+								":id2"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								},
+								{
+									"key": "id2",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Retro Comment (All)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "iosW7b_pPQeWT4eKXc7bdrBZydPYY7tL",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/project3-backend/rest/retrospective/:id/deleteAllComments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"project3-backend",
+								"rest",
+								"retrospective",
+								":id",
+								"deleteAllComments"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
 							]
 						}
 					},
