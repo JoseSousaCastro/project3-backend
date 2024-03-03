@@ -59,6 +59,9 @@ public class TaskBean implements Serializable {
     public Response removeTask(String token, int id) {
         // Get user role by token
         UserEntity user = userDao.findUserByToken(token);
+        if (user == null) {
+            return Response.status(404).entity("No user found").build();
+        }
         UserRole userRole = user.getRole();
         // Check if the user is a SCRUM_MASTER or PRODUCT_OWNER
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
@@ -77,6 +80,9 @@ public class TaskBean implements Serializable {
     public Response removeAllUserTasks(String token) {
         // Get user role by token
         UserEntity user = userDao.findUserByToken(token);
+        if (user == null) {
+            return Response.status(404).entity("No user found").build();
+        }
         UserRole userRole = user.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
@@ -102,6 +108,9 @@ public class TaskBean implements Serializable {
     public Response restoreDeletedTask(String token, int id) {
         // Get user role by token
         UserEntity user = userDao.findUserByToken(token);
+        if (user == null) {
+            return Response.status(404).entity("No user found").build();
+        }
         UserRole userRole = user.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
@@ -120,6 +129,9 @@ public class TaskBean implements Serializable {
     public Response removeTaskPermanently(String token, int id) {
         // Get user role by token
         UserEntity user = userDao.findUserByToken(token);
+        if (user == null) {
+            return Response.status(404).entity("No user found").build();
+        }
         UserRole userRole = user.getRole();
         // Check if the user is a PRODUCT_OWNER
         if (userRole == UserRole.PRODUCT_OWNER) {
@@ -155,6 +167,9 @@ public class TaskBean implements Serializable {
     public Response getUserTasks(String token, String username){
         // Get user role by token
         UserEntity user = userDao.findUserByToken(token);
+        if (user == null) {
+            return Response.status(404).entity("No user found").build();
+        }
         UserRole userRole = user.getRole();
         // Check if the user is a SCRUM_MASTER or PRODUCT_OWNER
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
@@ -178,6 +193,9 @@ public class TaskBean implements Serializable {
     public Response getDeletedTasks(String token) {
         // Get user role by token
         UserEntity user = userDao.findUserByToken(token);
+        if (user == null) {
+            return Response.status(404).entity("No user found").build();
+        }
         UserRole userRole = user.getRole();
         // Check if the user is a SCRUM_MASTER or PRODUCT_OWNER
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
@@ -196,6 +214,9 @@ public class TaskBean implements Serializable {
     public Response getCategoryTasks(String token, String categoryName) {
         // Get user role by token
         UserEntity user = userDao.findUserByToken(token);
+        if (user == null) {
+            return Response.status(404).entity("No user found").build();
+        }
         UserRole userRole = user.getRole();
         // Check if the user is a SCRUM_MASTER or PRODUCT_OWNER
         if (userRole == UserRole.SCRUM_MASTER || userRole == UserRole.PRODUCT_OWNER) {
@@ -220,6 +241,9 @@ public class TaskBean implements Serializable {
         TaskEntity t;
         // Get user role by token
         UserEntity user = userDao.findUserByToken(token);
+        if (user == null) {
+            return false;
+        }
         UserRole userRole = user.getRole();
         // Check if the user is a DEVELOPER
         if (userRole == UserRole.DEVELOPER) {

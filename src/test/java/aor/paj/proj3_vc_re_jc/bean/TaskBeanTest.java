@@ -110,9 +110,11 @@ class TaskBeanTest {
         when(userDao.findUserByToken("token123")).thenReturn(null);
         when(categoryDao.findCategoryByName("Frontend")).thenReturn(ctgEntity);
         doNothing().when(taskDao).persist(isA(TaskEntity.class));
+
     }
 
 
+    // Nº1
     @Test
     void testGetTaskById() {
         // Tests
@@ -128,6 +130,8 @@ class TaskBeanTest {
         verify(taskDao, atLeastOnce()).findTaskById(0);
     }
 
+
+    // Nº2
     @Test
     void testMoveTaskColumn() {
         TaskEntity taskEntity = new TaskEntity();
@@ -144,6 +148,8 @@ class TaskBeanTest {
         verify(taskDao, atLeastOnce()).findTaskById(5);
     }
 
+
+    // Nº3
     @Test
     void testPersistTask() {
         // tests
@@ -171,4 +177,154 @@ class TaskBeanTest {
         verify(userDao, times(1)).findUserByToken(ArgumentMatchers.any(String.class));
         verify(userDao, times(1)).findUserByToken("token_id");
     }
+
+/*
+    // Nº4
+    @Test
+    void testRemoveTask() {
+        // Tests
+        try (Response response = taskBean.removeTask("token_id", 1)) {
+            assertEquals(200, response.getStatus(), "Task should be removed successfully");
+        }
+
+        try (Response responseNotFound = taskBean.removeTask("token_id", 0)) {
+            assertEquals(404, responseNotFound.getStatus(), "Task not found, should return 404");
+        }
+
+        try (Response responseUnauthorized = taskBean.removeTask("token123", 1)) {
+            assertEquals(401, responseUnauthorized.getStatus(), "Unauthorized access, should return 401");
+        }
+
+        // Verifications
+        // Verifies whether findTaskById() is called
+        verify(taskDao, times(1)).findTaskById(1);
+        verify(taskDao, times(1)).findTaskById(0);
+    }
+
+
+
+
+
+    // Nº5
+    @Test
+    void testRestoreDeletedTask() {
+        // Tests
+        Response response = taskBean.restoreDeletedTask("token_id", 1);
+        assertEquals(200, response.getStatus(), "Task should be restored successfully");
+
+        Response responseNotFound = taskBean.restoreDeletedTask("token_id", 0);
+        assertEquals(404, responseNotFound.getStatus(), "Deleted task not found, should return 404");
+
+        Response responseUnauthorized = taskBean.restoreDeletedTask("token123", 1);
+        assertEquals(401, responseUnauthorized.getStatus(), "Unauthorized access, should return 401");
+
+        // Verifications
+        // Verifies whether findTaskById() is called
+        verify(taskDao, times(1)).findTaskById(1);
+        verify(taskDao, times(1)).findTaskById(0);
+    }
+
+
+
+    // Nº6
+    @Test
+    void testRemoveTaskPermanently() {
+        // Tests
+        Response response = taskBean.removeTaskPermanently("token_id", 1);
+        assertEquals(200, response.getStatus(), "Task should be removed permanently successfully");
+
+        Response responseNotFound = taskBean.removeTaskPermanently("token_id", 0);
+        assertEquals(404, responseNotFound.getStatus(), "Task not found, should return 404");
+
+        Response responseUnauthorized = taskBean.removeTaskPermanently("token123", 1);
+        assertEquals(401, responseUnauthorized.getStatus(), "Unauthorized access, should return 401");
+
+        // Verifications
+        // Verifies whether findTaskById() is called
+        verify(taskDao, times(1)).findTaskById(1);
+        verify(taskDao, times(1)).findTaskById(0);
+    }
+
+
+    // Nº7
+    @Test
+    void testGetUserTasks() {
+        // Tests
+        Response response = taskBean.getUserTasks("token_id", "userTest");
+        assertEquals(200, response.getStatus(), "Should return user tasks");
+
+        Response responseNotFound = taskBean.getUserTasks("token_id", "noUser");
+        assertEquals(404, responseNotFound.getStatus(), "User not found, should return 404");
+
+        Response responseUnauthorized = taskBean.getUserTasks("token123", "userTest");
+        assertEquals(401, responseUnauthorized.getStatus(), "Unauthorized access, should return 401");
+
+        // Verifications
+        // Verifies whether findUserByUsername() is called
+        verify(userDao, times(1)).findUserByUsername(ArgumentMatchers.any(String.class));
+        verify(userDao, times(1)).findUserByUsername("userTest");
+        verify(userDao, times(1)).findUserByUsername("noUser");
+    }
+
+
+    // Nº8
+    @Test
+    void testGetDeletedTasks() {
+        // Tests
+        Response response = taskBean.getDeletedTasks("token_id");
+        assertEquals(200, response.getStatus(), "Should return deleted tasks");
+
+        Response responseUnauthorized = taskBean.getDeletedTasks("token123");
+        assertEquals(401, responseUnauthorized.getStatus(), "Unauthorized access, should return 401");
+
+        // Verifications
+        // Verifies whether findTasksByDeleted() is called
+        verify(taskDao, times(1)).findTasksByDeleted();
+    }
+
+
+    // Nº9
+    @Test
+    void testGetCategoryTasks() {
+        // Tests
+        Response response = taskBean.getCategoryTasks("token_id", "Frontend");
+        assertEquals(200, response.getStatus(), "Should return tasks for the category");
+
+        Response responseNotFound = taskBean.getCategoryTasks("token_id", "NonexistentCategory");
+        assertEquals(404, responseNotFound.getStatus(), "Category not found, should return 404");
+
+        Response responseUnauthorized = taskBean.getCategoryTasks("token123", "Frontend");
+        assertEquals(401, responseUnauthorized.getStatus(), "Unauthorized access, should return 401");
+
+        // Verifications
+        // Verifies whether findCategoryByName() is called
+        verify(categoryDao, times(1)).findCategoryByName("Frontend");
+        verify(categoryDao, times(1)).findCategoryByName("NonexistentCategory");
+    }
+
+
+    // Nº10
+    @Test
+    void testUpdateTask() {
+        // Tests
+        TaskDto taskDto = new TaskDto(1, "UpdatedTask", "Updated Description", TaskState.DOING, TaskPriority.HIGH_PRIORITY,
+                "2024-03-01", "2024-03-10", false, "Frontend");
+        CategoryEntity categoryEntity = new CategoryEntity();
+        categoryEntity.setId(1);
+        categoryEntity.setCategoryName("Frontend");
+
+        assertTrue(taskBean.updateTask("token_id", taskDto, categoryEntity));
+
+        // Verifications
+        // Verifies whether findTaskById() is called
+        verify(taskDao, times(1)).findTaskById(1);
+        // Verifies whether findUserByToken() is called
+        verify(userDao, times(1)).findUserByToken(ArgumentMatchers.any(String.class));
+        verify(userDao, times(1)).findUserByToken("token_id");
+        // Verifies whether findCategoryByName() is called
+        verify(categoryDao, times(1)).findCategoryByName("Frontend");
+    }
+
+     */
+
 }
