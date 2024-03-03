@@ -156,6 +156,7 @@ public class RetroBean implements Serializable {
                     retroCommentEntity.setUser(userEntity);
                     retroCommentEntity.setEvent(retroEventEntity);
                     retroEventEntity.addComment(retroCommentEntity);
+
                     retroEventDao.merge(retroEventEntity);
                 } else {
                     added = false;
@@ -192,13 +193,16 @@ public class RetroBean implements Serializable {
                     retroCommentEntity.setCategory(RetroCommentCategory.fromValue(categoryValue));
                 } catch (NumberFormatException e) {
                     // Lidar com a exceção, a String não é um número válido
+                    System.out.println("ERRO3");
                     edited = false;
                 }
                 retroEventDao.merge(retroEventEntity);
             } else {
+                System.out.println("ERRO1");
                 edited = false;
             }
         } else {
+            System.out.println("ERRO2");
             edited = false;
         }
         return edited;
@@ -243,6 +247,8 @@ public class RetroBean implements Serializable {
             RetroCommentDto  dto = new RetroCommentDto();
             dto.setComment(en.getComment());
             dto.setCommentId(en.getCommentId());
+            dto.setUserId(en.getUser().getId());
+
 
             dtos.add(dto);
         }

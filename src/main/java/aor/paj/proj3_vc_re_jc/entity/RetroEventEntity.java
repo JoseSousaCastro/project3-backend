@@ -89,6 +89,8 @@ public class RetroEventEntity implements Serializable {
         comments.add(comment);
     }
 
+
+
     public RetroCommentEntity getComment(int id2) {
         for (RetroCommentEntity comment : comments) {
             if (comment.getCommentId() == id2) {
