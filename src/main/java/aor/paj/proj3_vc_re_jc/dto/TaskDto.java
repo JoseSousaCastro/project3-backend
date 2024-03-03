@@ -33,6 +33,18 @@ public class TaskDto {
     public TaskDto() {
     }
 
+    public TaskDto(int id, String title, String description, TaskState state, TaskPriority priority, String startDate, String endDate, boolean deleted, String category) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.state = state;
+        this.priority = priority;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.deleted = deleted;
+        this.category = category;
+    }
+
     public int getId() {
         return id;
     }

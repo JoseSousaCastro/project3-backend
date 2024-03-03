@@ -42,8 +42,6 @@ public class CategoryBean implements Serializable {
         }
     }
 
-
-    // EM AVALIAÇÃO
     public Response getCategorybyId() {
         ArrayList<CategoryEntity> categories = categoryDao.findAllCategories();
         if (categories != null && !categories.isEmpty()) {
